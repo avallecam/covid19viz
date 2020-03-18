@@ -47,14 +47,14 @@ remotes::install_github("avallecam/covid19viz")
 ``` r
 library(covid19viz)
 
-# paste las update available at
+# paste last update available at
 # https://github.com/fkrauer/COVID-19
 update <- "2020-03-10"
 
 # apply
 who_sitrep_country_report(
   update = update,
-  country = "Brazil")
+  country_region = "Brazil")
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -62,26 +62,42 @@ who_sitrep_country_report(
 ### with JHU collection
 
 ``` r
+library(covid19viz)
 library(tidyverse)
 
-jhu_sitrep <- jhu_sitrep_import(source = "confirmed")
+#import all data at once
+jhu_sitrep_peru <- jhu_sitrep_all_sources(country_region="Peru")
 
-jhu_sitrep %>%
-  jhu_sitrep_cleandb() %>%
-  filter(country_region=="Peru") %>%
-  arrange(desc(value))
-#> # A tibble: 50 x 7
-#>    source    country_region province_state   lat  long dates      value
-#>    <chr>     <chr>          <chr>          <dbl> <dbl> <date>     <dbl>
-#>  1 confirmed Peru           <NA>           -9.19 -75.0 2020-03-10    11
-#>  2 confirmed Peru           <NA>           -9.19 -75.0 2020-03-11    11
-#>  3 confirmed Peru           <NA>           -9.19 -75.0 2020-03-09     7
-#>  4 confirmed Peru           <NA>           -9.19 -75.0 2020-03-08     6
-#>  5 confirmed Peru           <NA>           -9.19 -75.0 2020-03-06     1
-#>  6 confirmed Peru           <NA>           -9.19 -75.0 2020-03-07     1
-#>  7 confirmed Peru           <NA>           -9.19 -75.0 2020-01-22     0
-#>  8 confirmed Peru           <NA>           -9.19 -75.0 2020-01-23     0
-#>  9 confirmed Peru           <NA>           -9.19 -75.0 2020-01-24     0
-#> 10 confirmed Peru           <NA>           -9.19 -75.0 2020-01-25     0
-#> # ... with 40 more rows
+jhu_sitrep_peru
+#> # A tibble: 3 x 4
+#>   country_region source    data_filter       sum_data
+#>   <chr>          <chr>     <list>               <dbl>
+#> 1 Peru           confirmed <tibble [56 x 7]>      117
+#> 2 Peru           deaths    <tibble [56 x 7]>        0
+#> 3 Peru           recovered <tibble [56 x 7]>        1
+
+#transform to tidy format
+jhu_sitrep_peru %>% 
+  jhu_sitrep_all_sources_tidy() %>% 
+  arrange(desc(confirmed_cumulative)) %>% 
+  glimpse()
+#> Observations: 56
+#> Variables: 11
+#> $ country_region       <chr> "Peru", "Peru", "Peru", "Peru", "Peru", "...
+#> $ province_state       <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N...
+#> $ lat                  <dbl> -9.19, -9.19, -9.19, -9.19, -9.19, -9.19,...
+#> $ long                 <dbl> -75.0152, -75.0152, -75.0152, -75.0152, -...
+#> $ date                 <date> 2020-03-17, 2020-03-16, 2020-03-15, 2020...
+#> $ confirmed_cumulative <dbl> 117, 86, 43, 38, 28, 15, 11, 11, 7, 6, 1,...
+#> $ deaths_cumulative    <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+#> $ recovered_cumulative <dbl> 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+#> $ confirmed_incidence  <dbl> 31, 43, 5, 10, 13, 4, 4, 0, 1, 5, 1, 0, 0...
+#> $ deaths_incidence     <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+#> $ recovered_incidence  <dbl> 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
 ```
+
+``` r
+jhu_sitrep_country_report(country_region = "Peru")
+```
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />

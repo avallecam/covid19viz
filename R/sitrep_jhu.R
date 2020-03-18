@@ -15,8 +15,11 @@
 #'
 #' @export jhu_sitrep_import
 #' @export jhu_sitrep_cleandb
-#' @export jhu_sitrep_cummulative
-#' @export jhu_sitrep_cummulative_all_sources
+#' @export jhu_sitrep_filter
+#' @export jhu_sitrep_cumulative
+#' @export jhu_sitrep_all_sources
+#' @export jhu_sitrep_all_sources_tidy
+#' @export jhu_sitrep_country_report
 #'
 #' @examples
 #'
@@ -32,9 +35,10 @@
 #'
 #' jhu_sitrep_import(source = "confirmed") %>%
 #'   jhu_sitrep_cleandb() %>%
-#'   jhu_sitrep_cummulative()
+#'   jhu_sitrep_filter(country_region="all") %>%
+#'   jhu_sitrep_cumulative()
 #'
-#' jhu_sitrep_cummulative_all_sources(country_region="Peru")
+#' jhu_sitrep_all_sources(country_region="Peru")
 #'
 jhu_sitrep_import <- function(source) {
   if (source=="confirmed") {
@@ -77,14 +81,22 @@ jhu_sitrep_cleandb <- function(data) {
 #' @inheritParams jhu_sitrep_import
 #' @param country_region input country name in english
 
-jhu_sitrep_cummulative <- function(data,country_region="all") {
+jhu_sitrep_filter <- function(data,country_region="all") {
   if (country_region!="all") {
     data_filter <- data %>%
       filter(country_region=={{country_region}})
   } else {
     data_filter <- data
   }
-  data_filter %>%
+  data_filter
+}
+
+#' @describeIn jhu_sitrep_import clean jhu dataset
+#' @inheritParams jhu_sitrep_import
+#' @param country_region input country name in english
+
+jhu_sitrep_cumulative <- function(data) {
+  data %>%
     group_by(country_region) %>%
     filter(dates==last(dates)) %>%
     ungroup() %>%
@@ -95,11 +107,51 @@ jhu_sitrep_cummulative <- function(data,country_region="all") {
 #' @describeIn jhu_sitrep_import clean jhu dataset
 #' @inheritParams jhu_sitrep_import
 
-jhu_sitrep_cummulative_all_sources <- function(country_region="all") {
+jhu_sitrep_all_sources <- function(country_region="all") {
   expand_grid(country_region={{country_region}},
               source=c("confirmed","deaths","recovered")) %>%
+    # group_by(country_region,source) %>%
+    # nest() %>%
     mutate(data=map(.x = source,.f = jhu_sitrep_import)) %>%
     mutate(data_clean=map(.x = data,.f = jhu_sitrep_cleandb)) %>%
-    mutate(sum_data=pmap_dbl(.l = select(.,data=data_clean,country_region),
-                             .f = jhu_sitrep_cummulative))
+    mutate(data_filter=pmap(.l = select(.,data=data_clean,country_region),
+                            .f = jhu_sitrep_filter)) %>%
+    mutate(sum_data=map_dbl(.x = data_filter,
+                            .f = jhu_sitrep_cumulative)) %>%
+    select(-data,-data_clean)
+}
+
+#' @describeIn jhu_sitrep_import clean jhu dataset
+#' @inheritParams jhu_sitrep_import
+#' @param data_filter default from jhu_sitrep_all_sources output
+
+jhu_sitrep_all_sources_tidy <- function(data,data_filter=data_filter) {
+  data %>%
+    pull({{data_filter}}) %>%
+    purrr::reduce(.f = full_join) %>%
+    pivot_wider(id_cols = -source,names_from = source,values_from = value) %>%
+    group_by(country_region) %>%
+    mutate(confirmed_incidence=confirmed-lag(confirmed,default = 0),
+           deaths_incidence=deaths-lag(deaths,default = 0),
+           recovered_incidence=recovered-lag(recovered,default = 0)) %>%
+    ungroup() %>%
+    rename_at(.vars = vars(confirmed,deaths,recovered),.funs = ~str_replace(.x,"(.+)","\\1_cumulative")) %>%
+    rename(date=dates)
+}
+
+#' @describeIn jhu_sitrep_import clean jhu dataset
+#' @inheritParams jhu_sitrep_import
+
+jhu_sitrep_country_report <- function(country_region="Peru") {
+  data_input <- jhu_sitrep_all_sources(country_region={{country_region}}) %>%
+    jhu_sitrep_all_sources_tidy() %>%
+    filter(confirmed_cumulative>0)
+
+  f1 <- data_input %>%
+    who_sitrep_ggline(y_cum_value = confirmed_cumulative,n_breaks = 10)
+
+  f2 <- data_input %>%
+    who_sitrep_ggbar(y_inc_value = confirmed_incidence,n_breaks=10)
+
+  f1 + f2
 }

@@ -113,13 +113,13 @@
 
 <span class='fu'>who_sitrep_cleandb</span>(<span class='no'>data</span>)
 
-<span class='fu'>who_sitrep_ggline</span>(<span class='no'>data</span>, <span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"Peru"</span>, <span class='no'>y_cum_value</span>, <span class='no'>color</span>,
+<span class='fu'>who_sitrep_ggline</span>(<span class='no'>data</span>, <span class='kw'>country_region</span> <span class='kw'>=</span> <span class='st'>"Peru"</span>, <span class='no'>y_cum_value</span>, <span class='no'>color</span>,
   <span class='kw'>n_breaks</span> <span class='kw'>=</span> <span class='fl'>5</span>)
 
-<span class='fu'>who_sitrep_ggbar</span>(<span class='no'>data</span>, <span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"Peru"</span>, <span class='no'>y_inc_value</span>, <span class='no'>fill</span>,
+<span class='fu'>who_sitrep_ggbar</span>(<span class='no'>data</span>, <span class='kw'>country_region</span> <span class='kw'>=</span> <span class='st'>"Peru"</span>, <span class='no'>y_inc_value</span>, <span class='no'>fill</span>,
   <span class='kw'>n_breaks</span> <span class='kw'>=</span> <span class='fl'>5</span>)
 
-<span class='fu'>who_sitrep_country_report</span>(<span class='no'>update</span>, <span class='no'>country</span>)</pre>
+<span class='fu'>who_sitrep_country_report</span>(<span class='no'>update</span>, <span class='no'>country_region</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -133,8 +133,8 @@
       <td><p>input of raw who dataset</p></td>
     </tr>
     <tr>
-      <th>country</th>
-      <td><p>string of country name</p></td>
+      <th>country_region</th>
+      <td><p>string of country_region name</p></td>
     </tr>
     <tr>
       <th>y_cum_value</th>
@@ -160,7 +160,7 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>report per country using digitalized who sitreps</p>
+    <p>report per country_region using digitalized who sitreps</p>
     
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
@@ -192,16 +192,17 @@
 #&gt; <span class='message'>)</span></div><div class='input'>
 <span class='no'>who_sitrep</span> <span class='kw'>%&gt;%</span>
     <span class='fu'>who_sitrep_cleandb</span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>country</span><span class='kw'>==</span><span class='st'>"Peru"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 8</span><span>
-#&gt;   date       country adm   n_cum_conf n_cum_deaths n_inc_conf n_inc_deaths class
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> 2020-03-07 Peru    all            1            0          1            0 Impo~
-#&gt; </span><span style='color: #555555;'>2</span><span> 2020-03-08 Peru    all            6            0          0            0 Loca~
-#&gt; </span><span style='color: #555555;'>3</span><span> 2020-03-09 Peru    all            6            0          0            0 Loca~
-#&gt; </span><span style='color: #555555;'>4</span><span> 2020-03-10 Peru    all            9            0          3            0 Loca~</div><div class='input'>
+    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>country_region</span><span class='kw'>==</span><span class='st'>"Peru"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 8</span><span>
+#&gt;   date       country_region adm   n_cum_conf n_cum_deaths n_inc_conf
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> 2020-03-07 Peru           all            1            0          1
+#&gt; </span><span style='color: #555555;'>2</span><span> 2020-03-08 Peru           all            6            0          0
+#&gt; </span><span style='color: #555555;'>3</span><span> 2020-03-09 Peru           all            6            0          0
+#&gt; </span><span style='color: #555555;'>4</span><span> 2020-03-10 Peru           all            9            0          3
+#&gt; </span><span style='color: #555555;'># ... with 2 more variables: n_inc_deaths </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, class </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span></div><div class='input'>
 <span class='no'>who_sitrep</span> <span class='kw'>%&gt;%</span>
     <span class='fu'>who_sitrep_cleandb</span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'>who_sitrep_ggline</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"Peru"</span>,
+    <span class='fu'>who_sitrep_ggline</span>(<span class='kw'>country_region</span> <span class='kw'>=</span> <span class='st'>"Peru"</span>,
                       <span class='kw'>y_cum_value</span> <span class='kw'>=</span> <span class='no'>n_cum_conf</span>,
                       <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>class</span>, <span class='kw'>n_breaks</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='img'><img src='who_sitrep_import-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></span></pre>

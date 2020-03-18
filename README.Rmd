@@ -53,26 +53,35 @@ remotes::install_github("avallecam/covid19viz")
 ```{r,fig.height=7.5,fig.width=9}
 library(covid19viz)
 
-# paste las update available at
+# paste last update available at
 # https://github.com/fkrauer/COVID-19
 update <- "2020-03-10"
 
 # apply
 who_sitrep_country_report(
   update = update,
-  country = "Brazil")
+  country_region = "Brazil")
 ```
 
 ### with JHU collection
 
 ```{r}
+library(covid19viz)
 library(tidyverse)
 
-jhu_sitrep <- jhu_sitrep_import(source = "confirmed")
+#import all data at once
+jhu_sitrep_peru <- jhu_sitrep_all_sources(country_region="Peru")
 
-jhu_sitrep %>%
-  jhu_sitrep_cleandb() %>%
-  filter(country_region=="Peru") %>%
-  arrange(desc(value))
+jhu_sitrep_peru
+
+#transform to tidy format
+jhu_sitrep_peru %>% 
+  jhu_sitrep_all_sources_tidy() %>% 
+  arrange(desc(confirmed_cumulative)) %>% 
+  glimpse()
+```
+
+```{r,fig.width=8,fig.height=4,fig.align='center'}
+jhu_sitrep_country_report(country_region = "Peru")
 ```
 

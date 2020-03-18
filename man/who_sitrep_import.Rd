@@ -12,20 +12,20 @@ who_sitrep_import(update)
 
 who_sitrep_cleandb(data)
 
-who_sitrep_ggline(data, country = "Peru", y_cum_value, color,
+who_sitrep_ggline(data, country_region = "Peru", y_cum_value, color,
   n_breaks = 5)
 
-who_sitrep_ggbar(data, country = "Peru", y_inc_value, fill,
+who_sitrep_ggbar(data, country_region = "Peru", y_inc_value, fill,
   n_breaks = 5)
 
-who_sitrep_country_report(update, country)
+who_sitrep_country_report(update, country_region)
 }
 \arguments{
 \item{update}{string of date to update}
 
 \item{data}{input of raw who dataset}
 
-\item{country}{string of country name}
+\item{country_region}{string of country_region name}
 
 \item{y_cum_value}{cumulative variable}
 
@@ -38,7 +38,7 @@ who_sitrep_country_report(update, country)
 \item{fill}{fill of attribute}
 }
 \value{
-report per country using digitalized who sitreps
+report per country_region using digitalized who sitreps
 }
 \description{
 clean and plot who sitrep
@@ -65,11 +65,11 @@ who_sitrep <- who_sitrep_import(update = "2020-03-10")
 
 who_sitrep \%>\%
     who_sitrep_cleandb() \%>\%
-    filter(country=="Peru")
+    filter(country_region=="Peru")
 
 who_sitrep \%>\%
     who_sitrep_cleandb() \%>\%
-    who_sitrep_ggline(country = "Peru",
+    who_sitrep_ggline(country_region = "Peru",
                       y_cum_value = n_cum_conf,
                       color = class, n_breaks = 10)
 
