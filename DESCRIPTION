@@ -11,7 +11,7 @@ Description: Vizualize the WHO COVID-19 sitreps per Country.
 URL: https://avallecam.github.io/covid19viz/
 BugReports: https://github.com/avallecam/covid19viz/issues
 License: GPL-3
-Imports: tidyverse, dplyr, readr, tidyr, stringr, forcats, ggplot2, magrittr, aweek, lubridate, patchwork
+Imports: tidyverse, dplyr, readr, tidyr, purrr, stringr, forcats, ggplot2, magrittr, aweek, lubridate, patchwork
 Suggests: 
     testthat
 Encoding: UTF-8

@@ -3,16 +3,24 @@
 \name{jhu_sitrep_import}
 \alias{jhu_sitrep_import}
 \alias{jhu_sitrep_cleandb}
+\alias{jhu_sitrep_cummulative}
+\alias{jhu_sitrep_cummulative_all_sources}
 \title{jhu sitrep data management and visualization}
 \usage{
 jhu_sitrep_import(source)
 
 jhu_sitrep_cleandb(data)
+
+jhu_sitrep_cummulative(data, country_region = "all")
+
+jhu_sitrep_cummulative_all_sources(country_region = "all")
 }
 \arguments{
 \item{source}{string of source to use: "confirmed","deaths" or "recovered"}
 
 \item{data}{input of raw jhu dataset}
+
+\item{country_region}{input country name in english}
 }
 \value{
 import and cleaned jhu dataset
@@ -25,6 +33,10 @@ clean and plot jhu sitrep
 \item \code{jhu_sitrep_import}: import data from github
 
 \item \code{jhu_sitrep_cleandb}: clean jhu dataset
+
+\item \code{jhu_sitrep_cummulative}: clean jhu dataset
+
+\item \code{jhu_sitrep_cummulative_all_sources}: clean jhu dataset
 }}
 
 \examples{
@@ -38,5 +50,11 @@ jhu_sitrep \%>\%
   jhu_sitrep_cleandb() \%>\%
   filter(country_region=="Peru") \%>\%
   arrange(desc(dates))
+
+jhu_sitrep_import(source = "confirmed") \%>\%
+  jhu_sitrep_cleandb() \%>\%
+  jhu_sitrep_cummulative()
+
+jhu_sitrep_cummulative_all_sources(country_region="Peru")
 
 }
