@@ -100,7 +100,7 @@ jhu_sitrep_cumulative <- function(data) {
     group_by(country_region) %>%
     filter(dates==last(dates)) %>%
     ungroup() %>%
-    summarise(tot_value=sum(value)) %>%
+    summarise(tot_value=sum(value,na.rm = T)) %>%
     pull(tot_value)
 }
 
