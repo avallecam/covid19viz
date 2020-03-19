@@ -130,13 +130,18 @@ jhu_sitrep_all_sources_tidy <- function(data,data_filter=data_filter) {
     pull({{data_filter}}) %>%
     purrr::reduce(.f = full_join) %>%
     pivot_wider(id_cols = -source,names_from = source,values_from = value) %>%
-    group_by(country_region) %>%
+    #aqui se agregan los valores por pais
+    group_by(country_region,dates) %>%
+    summarise_at(.vars = vars(confirmed,deaths,recovered),.funs = sum, na.rm=TRUE) %>%
+    ungroup() %>%
+    #continua
     mutate(confirmed_incidence=confirmed-lag(confirmed,default = 0),
            deaths_incidence=deaths-lag(deaths,default = 0),
            recovered_incidence=recovered-lag(recovered,default = 0)) %>%
-    ungroup() %>%
     rename_at(.vars = vars(confirmed,deaths,recovered),.funs = ~str_replace(.x,"(.+)","\\1_cumulative")) %>%
     rename(date=dates)
+    #%>%
+    #mutate(province_state=if_else(is.na(province_state),"All country",province_state))
 }
 
 #' @describeIn jhu_sitrep_import clean jhu dataset
@@ -148,10 +153,14 @@ jhu_sitrep_country_report <- function(country_region="Peru") {
     filter(confirmed_cumulative>0)
 
   f1 <- data_input %>%
-    who_sitrep_ggline(y_cum_value = confirmed_cumulative,n_breaks = 10)
+    who_sitrep_ggline(y_cum_value = confirmed_cumulative,#color = province_state,
+                      n_breaks = 10) #+
+    #theme(legend.position="none")
 
   f2 <- data_input %>%
-    who_sitrep_ggbar(y_inc_value = confirmed_incidence,n_breaks=10)
+    who_sitrep_ggbar(y_inc_value = confirmed_incidence,#fill = province_state,
+                     n_breaks=10) #+
+    #theme(legend.position="none")
 
   f1 + f2
 }

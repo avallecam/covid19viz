@@ -3,6 +3,7 @@
 \name{who_sitrep_import}
 \alias{who_sitrep_import}
 \alias{who_sitrep_cleandb}
+\alias{who_sitrep_filter}
 \alias{who_sitrep_ggline}
 \alias{who_sitrep_ggbar}
 \alias{who_sitrep_country_report}
@@ -12,11 +13,13 @@ who_sitrep_import(update)
 
 who_sitrep_cleandb(data)
 
-who_sitrep_ggline(data, country_region = "Peru", y_cum_value, color,
-  n_breaks = 5)
+who_sitrep_filter(data, country_region = "all")
 
-who_sitrep_ggbar(data, country_region = "Peru", y_inc_value, fill,
-  n_breaks = 5)
+who_sitrep_ggline(data, country_region = country_region, y_cum_value,
+  color, n_breaks = 5)
+
+who_sitrep_ggbar(data, country_region = country_region, y_inc_value,
+  fill, n_breaks = 5)
 
 who_sitrep_country_report(update, country_region)
 }
@@ -25,7 +28,7 @@ who_sitrep_country_report(update, country_region)
 
 \item{data}{input of raw who dataset}
 
-\item{country_region}{string of country_region name}
+\item{country_region}{name of country region}
 
 \item{y_cum_value}{cumulative variable}
 
@@ -36,6 +39,8 @@ who_sitrep_country_report(update, country_region)
 \item{y_inc_value}{incidence variable}
 
 \item{fill}{fill of attribute}
+
+\item{data}{input of raw who dataset}
 }
 \value{
 report per country_region using digitalized who sitreps
@@ -48,6 +53,8 @@ clean and plot who sitrep
 \item \code{who_sitrep_import}: import data from github
 
 \item \code{who_sitrep_cleandb}: clean who dataset
+
+\item \code{who_sitrep_filter}: clean who dataset
 
 \item \code{who_sitrep_ggline}: plot a ggplot geom_line
 
@@ -69,8 +76,8 @@ who_sitrep \%>\%
 
 who_sitrep \%>\%
     who_sitrep_cleandb() \%>\%
-    who_sitrep_ggline(country_region = "Peru",
-                      y_cum_value = n_cum_conf,
+    who_sitrep_filter(country_region = "Peru") \%>\%
+    who_sitrep_ggline(y_cum_value = n_cum_conf,
                       color = class, n_breaks = 10)
 
 }

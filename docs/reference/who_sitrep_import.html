@@ -113,11 +113,13 @@
 
 <span class='fu'>who_sitrep_cleandb</span>(<span class='no'>data</span>)
 
-<span class='fu'>who_sitrep_ggline</span>(<span class='no'>data</span>, <span class='kw'>country_region</span> <span class='kw'>=</span> <span class='st'>"Peru"</span>, <span class='no'>y_cum_value</span>, <span class='no'>color</span>,
-  <span class='kw'>n_breaks</span> <span class='kw'>=</span> <span class='fl'>5</span>)
+<span class='fu'>who_sitrep_filter</span>(<span class='no'>data</span>, <span class='kw'>country_region</span> <span class='kw'>=</span> <span class='st'>"all"</span>)
 
-<span class='fu'>who_sitrep_ggbar</span>(<span class='no'>data</span>, <span class='kw'>country_region</span> <span class='kw'>=</span> <span class='st'>"Peru"</span>, <span class='no'>y_inc_value</span>, <span class='no'>fill</span>,
-  <span class='kw'>n_breaks</span> <span class='kw'>=</span> <span class='fl'>5</span>)
+<span class='fu'>who_sitrep_ggline</span>(<span class='no'>data</span>, <span class='kw'>country_region</span> <span class='kw'>=</span> <span class='no'>country_region</span>, <span class='no'>y_cum_value</span>,
+  <span class='no'>color</span>, <span class='kw'>n_breaks</span> <span class='kw'>=</span> <span class='fl'>5</span>)
+
+<span class='fu'>who_sitrep_ggbar</span>(<span class='no'>data</span>, <span class='kw'>country_region</span> <span class='kw'>=</span> <span class='no'>country_region</span>, <span class='no'>y_inc_value</span>,
+  <span class='no'>fill</span>, <span class='kw'>n_breaks</span> <span class='kw'>=</span> <span class='fl'>5</span>)
 
 <span class='fu'>who_sitrep_country_report</span>(<span class='no'>update</span>, <span class='no'>country_region</span>)</pre>
     
@@ -134,7 +136,7 @@
     </tr>
     <tr>
       <th>country_region</th>
-      <td><p>string of country_region name</p></td>
+      <td><p>name of country region</p></td>
     </tr>
     <tr>
       <th>y_cum_value</th>
@@ -156,6 +158,10 @@
       <th>fill</th>
       <td><p>fill of attribute</p></td>
     </tr>
+    <tr>
+      <th>data</th>
+      <td><p>input of raw who dataset</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -168,6 +174,7 @@
 <ul>
 <li><p><code>who_sitrep_import</code>: import data from github</p></li>
 <li><p><code>who_sitrep_cleandb</code>: clean who dataset</p></li>
+<li><p><code>who_sitrep_filter</code>: clean who dataset</p></li>
 <li><p><code>who_sitrep_ggline</code>: plot a ggplot geom_line</p></li>
 <li><p><code>who_sitrep_ggbar</code>: plot a ggplot geom_col</p></li>
 <li><p><code>who_sitrep_country_report</code>: create a full unified report</p></li>
@@ -202,8 +209,8 @@
 #&gt; </span><span style='color: #555555;'># ... with 2 more variables: n_inc_deaths </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, class </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span></div><div class='input'>
 <span class='no'>who_sitrep</span> <span class='kw'>%&gt;%</span>
     <span class='fu'>who_sitrep_cleandb</span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'>who_sitrep_ggline</span>(<span class='kw'>country_region</span> <span class='kw'>=</span> <span class='st'>"Peru"</span>,
-                      <span class='kw'>y_cum_value</span> <span class='kw'>=</span> <span class='no'>n_cum_conf</span>,
+    <span class='fu'>who_sitrep_filter</span>(<span class='kw'>country_region</span> <span class='kw'>=</span> <span class='st'>"Peru"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'>who_sitrep_ggline</span>(<span class='kw'>y_cum_value</span> <span class='kw'>=</span> <span class='no'>n_cum_conf</span>,
                       <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>class</span>, <span class='kw'>n_breaks</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='img'><img src='who_sitrep_import-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></span></pre>
   </div>

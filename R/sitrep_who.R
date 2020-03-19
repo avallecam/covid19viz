@@ -18,6 +18,7 @@
 #'
 #' @export who_sitrep_import
 #' @export who_sitrep_cleandb
+#' @export who_sitrep_filter
 #' @export who_sitrep_ggline
 #' @export who_sitrep_ggbar
 #' @export who_sitrep_country_report
@@ -35,8 +36,8 @@
 #'
 #' who_sitrep %>%
 #'     who_sitrep_cleandb() %>%
-#'     who_sitrep_ggline(country_region = "Peru",
-#'                       y_cum_value = n_cum_conf,
+#'     who_sitrep_filter(country_region = "Peru") %>%
+#'     who_sitrep_ggline(y_cum_value = n_cum_conf,
 #'                       color = class, n_breaks = 10)
 #'
 
@@ -57,25 +58,40 @@ who_sitrep_cleandb <- function(data) {
     rename(country_region=country)
 }
 
+#' @describeIn who_sitrep_import clean who dataset
+#' @inheritParams who_sitrep_import
+#' @param data input of raw who dataset
+#' @param country_region name of country region
+
+who_sitrep_filter <- function(data,country_region="all") {
+  if (country_region!="all") {
+    data_filter <- data %>%
+      filter(country_region=={{country_region}})
+  } else {
+    data_filter <- data
+  }
+  data_filter
+}
+
 #' @describeIn who_sitrep_import plot a ggplot geom_line
 #' @inheritParams who_sitrep_import
-#' @param country_region string of country_region name
 #' @param y_cum_value cumulative variable
 #' @param color colo of attribute
 #' @param n_breaks y axis breaks
 
-who_sitrep_ggline <- function(data,country_region="Peru",y_cum_value,color,n_breaks=5) {
+who_sitrep_ggline <- function(data,country_region=country_region,y_cum_value,color,n_breaks=5) {
+  country_region_name <- data %>% select({{country_region}}) %>% distinct() %>% pull()
   data %>%
     # mutate(class=fct_explicit_na(class)) %>%
     # mutate_at(.vars = vars(n_cum_deaths,n_inc_conf,n_inc_deaths),.funs = ~replace_na(.x,0)) %>%
-    filter(country_region == {{country_region}}) %>%
+    #filter(country_region == {{country_region}}) %>%
     ggplot(aes(x = date,y = {{y_cum_value}},color={{color}})) +
     geom_line() +
     geom_point() +
     scale_y_continuous(breaks= scales::pretty_breaks(n = {{n_breaks}})) +
     scale_x_date(date_breaks = "1 day",date_labels = "%b-%d") +
     scale_color_viridis_d() +
-    labs(title = {{country_region}},caption = "Data: WHO situation report") +
+    labs(title = country_region_name,caption = "Data: WHO situation report") +
     theme_classic() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
 }
@@ -85,17 +101,18 @@ who_sitrep_ggline <- function(data,country_region="Peru",y_cum_value,color,n_bre
 #' @param y_inc_value incidence variable
 #' @param fill fill of attribute
 
-who_sitrep_ggbar <- function(data,country_region="Peru",y_inc_value,fill,n_breaks=5) {
+who_sitrep_ggbar <- function(data,country_region=country_region,y_inc_value,fill,n_breaks=5) {
+  country_region_name <- data %>% select({{country_region}}) %>% distinct() %>% pull()
   data %>%
     # mutate(class=fct_explicit_na(class)) %>%
     # mutate_at(.vars = vars(n_cum_deaths,n_inc_conf,n_inc_deaths),.funs = ~replace_na(.x,0)) %>%
-    filter(country_region == {{country_region}}) %>%
+    #filter(country_region == {{country_region}}) %>%
     ggplot(aes(x = date,y = {{y_inc_value}},fill={{fill}})) +
     geom_col() +
     scale_y_continuous(breaks= scales::pretty_breaks(n = {{n_breaks}})) +
     scale_x_date(date_breaks = "1 day",date_labels = "%b-%d") +
     scale_fill_viridis_d() +
-    labs(title = {{country_region}},caption = "Data: WHO situation report") +
+    labs(title = country_region_name,caption = "Data: WHO situation report") +
     theme_classic() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1),)
 }
@@ -117,23 +134,23 @@ who_sitrep_country_report <- function(update,country_region) {
 
   f1 <- who_sitrep %>%
     who_sitrep_cleandb() %>%
-    who_sitrep_ggline(country_region = country_name,
-                      y_cum_value = n_cum_conf,
+    who_sitrep_filter(country_region = country_name) %>%
+    who_sitrep_ggline(y_cum_value = n_cum_conf,
                       color = class, n_breaks = 10)
   f3 <- who_sitrep %>%
     who_sitrep_cleandb() %>%
-    who_sitrep_ggline(country_region = country_name,
-                      y_cum_value = n_cum_deaths,
+    who_sitrep_filter(country_region = country_name) %>%
+    who_sitrep_ggline(y_cum_value = n_cum_deaths,
                       color = class, n_breaks = 10)
   f2 <- who_sitrep %>%
     who_sitrep_cleandb() %>%
-    who_sitrep_ggbar(country_region = country_name,
-                     y_inc_value = n_inc_conf,
+    who_sitrep_filter(country_region = country_name) %>%
+    who_sitrep_ggbar(y_inc_value = n_inc_conf,
                      fill = class)
   f4 <- who_sitrep %>%
     who_sitrep_cleandb() %>%
-    who_sitrep_ggbar(country_region = country_name,
-                     y_inc_value = n_inc_deaths,
+    who_sitrep_filter(country_region = country_name) %>%
+    who_sitrep_ggbar(y_inc_value = n_inc_deaths,
                      fill = class)
 
   #library(patchwork)
