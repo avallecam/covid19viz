@@ -8,6 +8,7 @@
 \alias{jhu_sitrep_all_sources}
 \alias{jhu_sitrep_all_sources_tidy}
 \alias{jhu_sitrep_country_report}
+\alias{jhu_sitrep_cleandb_country_only}
 \title{jhu sitrep data management and visualization}
 \usage{
 jhu_sitrep_import(source)
@@ -23,6 +24,8 @@ jhu_sitrep_all_sources(country_region = "all")
 jhu_sitrep_all_sources_tidy(data, data_filter = data_filter)
 
 jhu_sitrep_country_report(country_region = "Peru")
+
+jhu_sitrep_cleandb_country_only(data)
 }
 \arguments{
 \item{source}{string of source to use: "confirmed","deaths" or "recovered"}
@@ -56,6 +59,8 @@ clean and plot jhu sitrep
 \item \code{jhu_sitrep_all_sources_tidy}: clean jhu dataset
 
 \item \code{jhu_sitrep_country_report}: clean jhu dataset
+
+\item \code{jhu_sitrep_cleandb_country_only}: import only numbers for the country
 }}
 
 \examples{
@@ -69,6 +74,11 @@ jhu_sitrep \%>\%
   jhu_sitrep_cleandb() \%>\%
   filter(country_region=="Peru") \%>\%
   arrange(desc(dates))
+
+jhu_sitrep \%>\%
+  jhu_sitrep_cleandb_country_only() \%>\%
+  filter(country_region=="Australia") \%>\%
+  avallecam::print_inf()
 
 jhu_sitrep_import(source = "confirmed") \%>\%
   jhu_sitrep_cleandb() \%>\%

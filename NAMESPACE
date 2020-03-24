@@ -3,6 +3,7 @@
 export(jhu_sitrep_all_sources)
 export(jhu_sitrep_all_sources_tidy)
 export(jhu_sitrep_cleandb)
+export(jhu_sitrep_cleandb_country_only)
 export(jhu_sitrep_country_report)
 export(jhu_sitrep_cumulative)
 export(jhu_sitrep_filter)

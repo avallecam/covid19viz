@@ -20,6 +20,7 @@
 #' @export jhu_sitrep_all_sources
 #' @export jhu_sitrep_all_sources_tidy
 #' @export jhu_sitrep_country_report
+#' @export jhu_sitrep_cleandb_country_only
 #'
 #' @examples
 #'
@@ -32,6 +33,11 @@
 #'   jhu_sitrep_cleandb() %>%
 #'   filter(country_region=="Peru") %>%
 #'   arrange(desc(dates))
+#'
+#' jhu_sitrep %>%
+#'   jhu_sitrep_cleandb_country_only() %>%
+#'   filter(country_region=="Australia") %>%
+#'   avallecam::print_inf()
 #'
 #' jhu_sitrep_import(source = "confirmed") %>%
 #'   jhu_sitrep_cleandb() %>%
@@ -164,3 +170,19 @@ jhu_sitrep_country_report <- function(country_region="Peru") {
 
   f1 + f2
 }
+
+#' @describeIn jhu_sitrep_import import only numbers for the country
+#' @inheritParams jhu_sitrep_import
+
+jhu_sitrep_cleandb_country_only <- function(data) {
+  data %>%
+    pivot_longer(cols = -c(source,`Province/State`,`Country/Region`,Lat,Long),
+                 names_to = "dates",values_to = "value") %>%
+    janitor::clean_names() %>%
+    mutate(dates=lubridate::mdy(dates)) %>%
+    select(source,country_region,province_state,everything()) %>%
+    group_by(source,country_region,dates) %>%
+    summarise_at(.vars = vars(value),.funs = sum, na.rm=TRUE) %>%
+    ungroup()
+}
+
