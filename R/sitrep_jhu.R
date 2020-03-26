@@ -48,7 +48,7 @@
 #'
 jhu_sitrep_import <- function(source) {
   if (source=="confirmed") {
-    path_start <- "https://raw.github.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
+    path_start <- "https://raw.github.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
     jhu_sitrep <- read_csv(file = path_start) %>%
       mutate(source=source) %>%
       select(source,everything())
@@ -62,7 +62,7 @@ jhu_sitrep_import <- function(source) {
   }
 
   if (source=="recovered") {
-    path_start <- "https://raw.github.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv"
+    path_start <- "https://raw.github.com/CSSEGISandData/COVID-19/master/csse_covid_19_data//time_series_covid19_deaths_global.csv"
     jhu_sitrep <- read_csv(file = path_start) %>%
       mutate(source=source) %>%
       select(source,everything())
