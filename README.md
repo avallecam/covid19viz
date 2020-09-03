@@ -9,6 +9,7 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/covid19viz)](https://cran.r-project.org/package=covid19viz)
+[![DOI](https://zenodo.org/badge/246721190.svg)](https://zenodo.org/badge/latestdoi/246721190)
 <!-- badges: end -->
 
 The goal of `covid19viz` is to access and summarize WHO sitreps for
