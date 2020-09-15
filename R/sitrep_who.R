@@ -89,7 +89,8 @@ who_sitrep_ggline <- function(data,country_region=country_region,y_cum_value,col
     geom_line() +
     geom_point() +
     scale_y_continuous(breaks= scales::pretty_breaks(n = {{n_breaks}})) +
-    scale_x_date(date_breaks = "1 day",date_labels = "%b-%d") +
+    # scale_x_date(date_breaks = "1 day",date_labels = "%b-%d") +
+    scale_x_date(date_breaks = "1 month",date_labels = "%b") +
     scale_color_viridis_d() +
     labs(title = country_region_name,caption = "Data: WHO situation report") +
     theme_classic() +
@@ -110,7 +111,8 @@ who_sitrep_ggbar <- function(data,country_region=country_region,y_inc_value,fill
     ggplot(aes(x = date,y = {{y_inc_value}},fill={{fill}})) +
     geom_col() +
     scale_y_continuous(breaks= scales::pretty_breaks(n = {{n_breaks}})) +
-    scale_x_date(date_breaks = "1 day",date_labels = "%b-%d") +
+    # scale_x_date(date_breaks = "1 day",date_labels = "%b-%d") +
+    scale_x_date(date_breaks = "1 month",date_labels = "%b") +
     scale_fill_viridis_d() +
     labs(title = country_region_name,caption = "Data: WHO situation report") +
     theme_classic() +
