@@ -42,6 +42,8 @@ import mobility google reports, acasp and unesco data on interventions
 
 \examples{
 
+\dontrun{
+
 library(covid19viz)
 library(tidyverse)
 
@@ -63,5 +65,7 @@ read_acaps_governments()
 
 # unesco education data
 read_unesco_education()
+
+}
 
 }

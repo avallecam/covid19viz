@@ -195,36 +195,24 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>covid19viz</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyverse</span>)
 
-<span class='no'>who_sitrep</span> <span class='kw'>&lt;-</span> <span class='fu'>who_sitrep_import</span>(<span class='kw'>update</span> <span class='kw'>=</span> <span class='st'>"2020-03-10"</span>)</div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
-#&gt; <span class='message'>cols(</span>
-#&gt; <span class='message'>  date = <span style='color: #0000BB;'>col_date(format = "")</span><span>,</span>
-#&gt; <span class='message'>  country = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  adm = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  n_cum_conf = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  n_cum_deaths = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  n_inc_conf = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  n_inc_deaths = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  class = </span><span style='color: #BB0000;'>col_character()</span><span></span>
-#&gt; <span class='message'>)</span></div><div class='input'>
+<span class='no'>who_sitrep</span> <span class='kw'>&lt;-</span> <span class='fu'>who_sitrep_import</span>(<span class='kw'>update</span> <span class='kw'>=</span> <span class='st'>"2020-03-10"</span>)
+
 <span class='no'>who_sitrep</span> <span class='kw'>%&gt;%</span>
     <span class='fu'>who_sitrep_cleandb</span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>country_region</span><span class='kw'>==</span><span class='st'>"Peru"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 8</span><span>
-#&gt;   date       country_region adm   n_cum_conf n_cum_deaths n_inc_conf
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> 2020-03-07 Peru           all            1            0          1
-#&gt; </span><span style='color: #555555;'>2</span><span> 2020-03-08 Peru           all            6            0          0
-#&gt; </span><span style='color: #555555;'>3</span><span> 2020-03-09 Peru           all            6            0          0
-#&gt; </span><span style='color: #555555;'>4</span><span> 2020-03-10 Peru           all            9            0          3
-#&gt; </span><span style='color: #555555;'># ... with 2 more variables: n_inc_deaths </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, class </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span></div><div class='input'>
+    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>country_region</span><span class='kw'>==</span><span class='st'>"Peru"</span>)
+
 <span class='no'>who_sitrep</span> <span class='kw'>%&gt;%</span>
     <span class='fu'>who_sitrep_cleandb</span>() <span class='kw'>%&gt;%</span>
     <span class='fu'>who_sitrep_filter</span>(<span class='kw'>country_region</span> <span class='kw'>=</span> <span class='st'>"Peru"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>who_sitrep_ggline</span>(<span class='kw'>y_cum_value</span> <span class='kw'>=</span> <span class='no'>n_cum_conf</span>,
-                      <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>class</span>, <span class='kw'>n_breaks</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='img'><img src='who_sitrep_import-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></span></pre>
+                      <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>class</span>, <span class='kw'>n_breaks</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

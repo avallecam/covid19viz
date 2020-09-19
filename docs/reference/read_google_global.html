@@ -158,267 +158,31 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>covid19viz</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyverse</span>)
 
 <span class='co'># google mobility reports</span>
 
 <span class='co'># global</span>
-<span class='fu'>read_google_global</span>()</div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
-#&gt; <span class='message'>cols(</span>
-#&gt; <span class='message'>  country_region_code = <span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  country_region = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  sub_region_1 = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  sub_region_2 = </span><span style='color: #BBBB00;'>col_logical()</span><span>,</span>
-#&gt; <span class='message'>  metro_area = </span><span style='color: #BBBB00;'>col_logical()</span><span>,</span>
-#&gt; <span class='message'>  iso_3166_2_code = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  census_fips_code = </span><span style='color: #BBBB00;'>col_logical()</span><span>,</span>
-#&gt; <span class='message'>  date = </span><span style='color: #0000BB;'>col_date(format = "")</span><span>,</span>
-#&gt; <span class='message'>  retail_and_recreation_percent_change_from_baseline = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  grocery_and_pharmacy_percent_change_from_baseline = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  parks_percent_change_from_baseline = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  transit_stations_percent_change_from_baseline = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  workplaces_percent_change_from_baseline = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  residential_percent_change_from_baseline = </span><span style='color: #00BB00;'>col_double()</span><span></span>
-#&gt; <span class='message'>)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 2584995 parsing failures.</span>
-#&gt; <span class='warning'> row        col           expected                  actual                                                                  file</span>
-#&gt; <span class='warning'>1846 metro_area 1/0/T/F/TRUE/FALSE Kabul Metropolitan Area 'https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv'</span>
-#&gt; <span class='warning'>1847 metro_area 1/0/T/F/TRUE/FALSE Kabul Metropolitan Area 'https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv'</span>
-#&gt; <span class='warning'>1848 metro_area 1/0/T/F/TRUE/FALSE Kabul Metropolitan Area 'https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv'</span>
-#&gt; <span class='warning'>1849 metro_area 1/0/T/F/TRUE/FALSE Kabul Metropolitan Area 'https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv'</span>
-#&gt; <span class='warning'>1850 metro_area 1/0/T/F/TRUE/FALSE Kabul Metropolitan Area 'https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv'</span>
-#&gt; <span class='warning'>.... .......... .................. ....................... .....................................................................</span>
-#&gt; <span class='warning'>See problems(...) for more details.</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 2,441,517 x 14</span><span>
-#&gt;    country_region_~ country_region sub_region_1 sub_region_2 metro_area
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>     
-#&gt; </span><span style='color: #555555;'> 1</span><span> AE               United Arab E~ </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #555555;'> 2</span><span> AE               United Arab E~ </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #555555;'> 3</span><span> AE               United Arab E~ </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #555555;'> 4</span><span> AE               United Arab E~ </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #555555;'> 5</span><span> AE               United Arab E~ </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #555555;'> 6</span><span> AE               United Arab E~ </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #555555;'> 7</span><span> AE               United Arab E~ </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #555555;'> 8</span><span> AE               United Arab E~ </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #555555;'> 9</span><span> AE               United Arab E~ </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #555555;'>10</span><span> AE               United Arab E~ </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>           </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #555555;'># ... with 2,441,507 more rows, and 9 more variables: iso_3166_2_code </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   census_fips_code </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, date </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   retail_and_recreation_percent_change_from_baseline </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   grocery_and_pharmacy_percent_change_from_baseline </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   parks_percent_change_from_baseline </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   transit_stations_percent_change_from_baseline </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   workplaces_percent_change_from_baseline </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   residential_percent_change_from_baseline </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+<span class='fu'>read_google_global</span>()
+
 <span class='co'># regional</span>
 <span class='co'># first: select country ISO</span>
-<span class='fu'>read_google_region_list</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 135 x 4</span><span>
-#&gt;     country_iso Name                                 Length Date               
-#&gt;     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>             
-#&gt; </span><span style='color: #555555;'>  1</span><span> AE          2020_AE_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>121</span><span>354 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>  2</span><span> AF          2020_AF_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>20</span><span>553 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>  3</span><span> AG          2020_AG_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>57</span><span>484 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>  4</span><span> AO          2020_AO_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>58</span><span>954 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>  5</span><span> AR          2020_AR_Region_Mobility_Report.csv  6</span><span style='text-decoration: underline;'>932</span><span>241 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>  6</span><span> AT          2020_AT_Region_Mobility_Report.csv  1</span><span style='text-decoration: underline;'>402</span><span>047 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>  7</span><span> AU          2020_AU_Region_Mobility_Report.csv  4</span><span style='text-decoration: underline;'>329</span><span>094 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>  8</span><span> AW          2020_AW_Region_Mobility_Report.csv     </span><span style='text-decoration: underline;'>9</span><span>967 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>  9</span><span> BA          2020_BA_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>13</span><span>096 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 10</span><span> BB          2020_BB_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>94</span><span>057 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 11</span><span> BD          2020_BD_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>10</span><span>939 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 12</span><span> BE          2020_BE_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>198</span><span>973 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 13</span><span> BF          2020_BF_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>58</span><span>941 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 14</span><span> BG          2020_BG_Region_Mobility_Report.csv  1</span><span style='text-decoration: underline;'>486</span><span>560 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 15</span><span> BH          2020_BH_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>10</span><span>633 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 16</span><span> BJ          2020_BJ_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>62</span><span>310 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 17</span><span> BO          2020_BO_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>755</span><span>614 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 18</span><span> BR          2020_BR_Region_Mobility_Report.csv 26</span><span style='text-decoration: underline;'>762</span><span>400 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 19</span><span> BS          2020_BS_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>50</span><span>432 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 20</span><span> BW          2020_BW_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>75</span><span>578 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 21</span><span> BY          2020_BY_Region_Mobility_Report.csv     </span><span style='text-decoration: underline;'>9</span><span>768 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 22</span><span> BZ          2020_BZ_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>70</span><span>300 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 23</span><span> CA          2020_CA_Region_Mobility_Report.csv  3</span><span style='text-decoration: underline;'>845</span><span>003 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 24</span><span> CH          2020_CH_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>342</span><span>762 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 25</span><span> CI          2020_CI_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>175</span><span>904 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 26</span><span> CL          2020_CL_Region_Mobility_Report.csv  1</span><span style='text-decoration: underline;'>050</span><span>835 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 27</span><span> CM          2020_CM_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>275</span><span>536 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 28</span><span> CO          2020_CO_Region_Mobility_Report.csv  4</span><span style='text-decoration: underline;'>094</span><span>296 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 29</span><span> CR          2020_CR_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>11</span><span>287 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 30</span><span> CV          2020_CV_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>46</span><span>702 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 31</span><span> CZ          2020_CZ_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>209</span><span>675 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 32</span><span> DE          2020_DE_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>221</span><span>647 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 33</span><span> DK          2020_DK_Region_Mobility_Report.csv  1</span><span style='text-decoration: underline;'>667</span><span>194 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 34</span><span> DO          2020_DO_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>504</span><span>999 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 35</span><span> EC          2020_EC_Region_Mobility_Report.csv  1</span><span style='text-decoration: underline;'>614</span><span>049 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 36</span><span> EE          2020_EE_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>160</span><span>004 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 37</span><span> EG          2020_EG_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>426</span><span>886 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 38</span><span> ES          2020_ES_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>891</span><span>125 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 39</span><span> FI          2020_FI_Region_Mobility_Report.csv  1</span><span style='text-decoration: underline;'>126</span><span>790 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 40</span><span> FJ          2020_FJ_Region_Mobility_Report.csv     </span><span style='text-decoration: underline;'>9</span><span>406 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 41</span><span> FR          2020_FR_Region_Mobility_Report.csv  1</span><span style='text-decoration: underline;'>712</span><span>923 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 42</span><span> GA          2020_GA_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>40</span><span>689 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 43</span><span> GB          2020_GB_Region_Mobility_Report.csv  7</span><span style='text-decoration: underline;'>153</span><span>647 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 44</span><span> GE          2020_GE_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>19</span><span>975 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 45</span><span> GH          2020_GH_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>38</span><span>477 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 46</span><span> GR          2020_GR_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>153</span><span>113 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 47</span><span> GT          2020_GT_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>345</span><span>892 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 48</span><span> GW          2020_GW_Region_Mobility_Report.csv     </span><span style='text-decoration: underline;'>9</span><span>507 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 49</span><span> HK          2020_HK_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>10</span><span>867 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 50</span><span> HN          2020_HN_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>785</span><span>765 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 51</span><span> HR          2020_HR_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>310</span><span>498 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 52</span><span> HT          2020_HT_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>115</span><span>294 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 53</span><span> HU          2020_HU_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>273</span><span>940 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 54</span><span> ID          2020_ID_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>482</span><span>720 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 55</span><span> IE          2020_IE_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>352</span><span>783 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 56</span><span> IL          2020_IL_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>273</span><span>435 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 57</span><span> IN          2020_IN_Region_Mobility_Report.csv  8</span><span style='text-decoration: underline;'>726</span><span>568 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 58</span><span> IQ          2020_IQ_Region_Mobility_Report.csv     </span><span style='text-decoration: underline;'>9</span><span>797 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 59</span><span> IT          2020_IT_Region_Mobility_Report.csv  2</span><span style='text-decoration: underline;'>016</span><span>358 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 60</span><span> JM          2020_JM_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>193</span><span>826 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 61</span><span> JO          2020_JO_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>180</span><span>433 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 62</span><span> JP          2020_JP_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>549</span><span>338 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 63</span><span> KE          2020_KE_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>494</span><span>727 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 64</span><span> KG          2020_KG_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>105</span><span>688 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 65</span><span> KH          2020_KH_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>278</span><span>775 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 66</span><span> KR          2020_KR_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>25</span><span>720 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 67</span><span> KW          2020_KW_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>120</span><span>968 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 68</span><span> KZ          2020_KZ_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>10</span><span>613 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 69</span><span> LA          2020_LA_Region_Mobility_Report.csv     </span><span style='text-decoration: underline;'>9</span><span>282 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 70</span><span> LB          2020_LB_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>426</span><span>603 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 71</span><span> LI          2020_LI_Region_Mobility_Report.csv     </span><span style='text-decoration: underline;'>9</span><span>769 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 72</span><span> LK          2020_LK_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>10</span><span>631 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 73</span><span> LT          2020_LT_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>149</span><span>896 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 74</span><span> LU          2020_LU_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>10</span><span>985 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 75</span><span> LV          2020_LV_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>410</span><span>968 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 76</span><span> LY          2020_LY_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>113</span><span>797 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 77</span><span> MA          2020_MA_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>56</span><span>703 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 78</span><span> MD          2020_MD_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>10</span><span>121 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 79</span><span> MK          2020_MK_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>11</span><span>810 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 80</span><span> ML          2020_ML_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>23</span><span>432 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 81</span><span> MM          2020_MM_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>45</span><span>716 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 82</span><span> MN          2020_MN_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>23</span><span>672 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 83</span><span> MT          2020_MT_Region_Mobility_Report.csv     </span><span style='text-decoration: underline;'>9</span><span>733 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 84</span><span> MU          2020_MU_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>153</span><span>612 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 85</span><span> MX          2020_MX_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>430</span><span>010 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 86</span><span> MY          2020_MY_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>222</span><span>230 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 87</span><span> MZ          2020_MZ_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>283</span><span>832 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 88</span><span> NA          2020_NA_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>92</span><span>487 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 89</span><span> NE          2020_NE_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>72</span><span>034 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 90</span><span> NG          2020_NG_Region_Mobility_Report.csv  2</span><span style='text-decoration: underline;'>182</span><span>993 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 91</span><span> NI          2020_NI_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>220</span><span>886 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 92</span><span> NL          2020_NL_Region_Mobility_Report.csv  4</span><span style='text-decoration: underline;'>813</span><span>185 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 93</span><span> NO          2020_NO_Region_Mobility_Report.csv  1</span><span style='text-decoration: underline;'>732</span><span>666 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 94</span><span> NP          2020_NP_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>10</span><span>088 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 95</span><span> NZ          2020_NZ_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>227</span><span>132 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 96</span><span> OM          2020_OM_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>171</span><span>747 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 97</span><span> PA          2020_PA_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>26</span><span>650 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 98</span><span> PE          2020_PE_Region_Mobility_Report.csv  1</span><span style='text-decoration: underline;'>734</span><span>899 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'> 99</span><span> PG          2020_PG_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>11</span><span>642 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>100</span><span> PH          2020_PH_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>404</span><span>516 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>101</span><span> PK          2020_PK_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>309</span><span>845 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>102</span><span> PL          2020_PL_Region_Mobility_Report.csv  6</span><span style='text-decoration: underline;'>269</span><span>809 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>103</span><span> PR          2020_PR_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>734</span><span>904 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>104</span><span> PT          2020_PT_Region_Mobility_Report.csv  2</span><span style='text-decoration: underline;'>502</span><span>262 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>105</span><span> PY          2020_PY_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>261</span><span>385 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>106</span><span> QA          2020_QA_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>23</span><span>947 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>107</span><span> RE          2020_RE_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>26</span><span>381 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>108</span><span> RO          2020_RO_Region_Mobility_Report.csv  3</span><span style='text-decoration: underline;'>137</span><span>494 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>109</span><span> RS          2020_RS_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>19</span><span>783 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>110</span><span> RU          2020_RU_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>250</span><span>859 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>111</span><span> RW          2020_RW_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>138</span><span>669 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>112</span><span> SA          2020_SA_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>202</span><span>298 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>113</span><span> SE          2020_SE_Region_Mobility_Report.csv  3</span><span style='text-decoration: underline;'>639</span><span>384 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>114</span><span> SG          2020_SG_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>10</span><span>988 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>115</span><span> SI          2020_SI_Region_Mobility_Report.csv  1</span><span style='text-decoration: underline;'>526</span><span>667 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>116</span><span> SK          2020_SK_Region_Mobility_Report.csv  1</span><span style='text-decoration: underline;'>239</span><span>019 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>117</span><span> SN          2020_SN_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>150</span><span>596 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>118</span><span> SV          2020_SV_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>229</span><span>173 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>119</span><span> TG          2020_TG_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>37</span><span>759 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>120</span><span> TH          2020_TH_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>10</span><span>400 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>121</span><span> TJ          2020_TJ_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>26</span><span>758 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>122</span><span> TR          2020_TR_Region_Mobility_Report.csv  6</span><span style='text-decoration: underline;'>238</span><span>280 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>123</span><span> TT          2020_TT_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>12</span><span>879 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>124</span><span> TW          2020_TW_Region_Mobility_Report.csv     </span><span style='text-decoration: underline;'>9</span><span>450 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>125</span><span> TZ          2020_TZ_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>651</span><span>658 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>126</span><span> UA          2020_UA_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>24</span><span>207 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>127</span><span> UG          2020_UG_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>241</span><span>016 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>128</span><span> US          2020_US_Region_Mobility_Report.csv 40</span><span style='text-decoration: underline;'>702</span><span>438 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>129</span><span> UY          2020_UY_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>304</span><span>201 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>130</span><span> VE          2020_VE_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>10</span><span>968 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>131</span><span> VN          2020_VN_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>839</span><span>784 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>132</span><span> YE          2020_YE_Region_Mobility_Report.csv     </span><span style='text-decoration: underline;'>9</span><span>148 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>133</span><span> ZA          2020_ZA_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>140</span><span>269 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>134</span><span> ZM          2020_ZM_Region_Mobility_Report.csv    </span><span style='text-decoration: underline;'>23</span><span>707 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span>
-#&gt; </span><span style='color: #555555;'>135</span><span> ZW          2020_ZW_Region_Mobility_Report.csv   </span><span style='text-decoration: underline;'>254</span><span>493 2020-09-13 </span><span style='color: #555555;'>15:27:00</span><span></div><div class='input'>
+<span class='fu'>read_google_region_list</span>()
+
 <span class='co'># second: read specific country data</span>
-<span class='no'>peru</span> <span class='kw'>&lt;-</span> <span class='fu'>read_google_region_country</span>(<span class='kw'>country_iso</span> <span class='kw'>=</span> <span class='st'>"PE"</span>)</div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
-#&gt; <span class='message'>cols(</span>
-#&gt; <span class='message'>  country_region_code = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  country_region = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  sub_region_1 = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  sub_region_2 = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  metro_area = </span><span style='color: #BBBB00;'>col_logical()</span><span>,</span>
-#&gt; <span class='message'>  iso_3166_2_code = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  census_fips_code = </span><span style='color: #BBBB00;'>col_logical()</span><span>,</span>
-#&gt; <span class='message'>  date = </span><span style='color: #0000BB;'>col_date(format = "")</span><span>,</span>
-#&gt; <span class='message'>  retail_and_recreation_percent_change_from_baseline = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  grocery_and_pharmacy_percent_change_from_baseline = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  parks_percent_change_from_baseline = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  transit_stations_percent_change_from_baseline = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  workplaces_percent_change_from_baseline = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  residential_percent_change_from_baseline = </span><span style='color: #00BB00;'>col_double()</span><span></span>
-#&gt; <span class='message'>)</span></div><div class='input'><span class='no'>peru</span> <span class='kw'>%&gt;%</span> <span class='fu'>count</span>(<span class='no'>sub_region_1</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 27 x 2</span><span>
-#&gt;    sub_region_1      n
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> Amazonas       </span><span style='text-decoration: underline;'>1</span><span>050
-#&gt; </span><span style='color: #555555;'> 2</span><span> Ancash         </span><span style='text-decoration: underline;'>1</span><span>871
-#&gt; </span><span style='color: #555555;'> 3</span><span> Apurimac        816
-#&gt; </span><span style='color: #555555;'> 4</span><span> Arequipa       </span><span style='text-decoration: underline;'>1</span><span>470
-#&gt; </span><span style='color: #555555;'> 5</span><span> Ayacucho       </span><span style='text-decoration: underline;'>1</span><span>050
-#&gt; </span><span style='color: #555555;'> 6</span><span> Cajamarca      </span><span style='text-decoration: underline;'>1</span><span>850
-#&gt; </span><span style='color: #555555;'> 7</span><span> Callao Region   210
-#&gt; </span><span style='color: #555555;'> 8</span><span> Cusco          </span><span style='text-decoration: underline;'>1</span><span>668
-#&gt; </span><span style='color: #555555;'> 9</span><span> Huancavelica    630
-#&gt; </span><span style='color: #555555;'>10</span><span> Huanuco         630
-#&gt; </span><span style='color: #555555;'># ... with 17 more rows</span><span></div><div class='input'>
+<span class='no'>peru</span> <span class='kw'>&lt;-</span> <span class='fu'>read_google_region_country</span>(<span class='kw'>country_iso</span> <span class='kw'>=</span> <span class='st'>"PE"</span>)
+<span class='no'>peru</span> <span class='kw'>%&gt;%</span> <span class='fu'>count</span>(<span class='no'>sub_region_1</span>)
+
 <span class='co'># acaps data</span>
-<span class='fu'>read_acaps_governments</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 193 x 8</span><span>
-#&gt;    Country_name ISO3  REGION Measure_taxonomy Measure_Category SOURCE_TYPE
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      
-#&gt; </span><span style='color: #555555;'> 1</span><span> Afghanistan  AFG   Asia   Schools closure  Social distanci~ Government 
-#&gt; </span><span style='color: #555555;'> 2</span><span> Albania      ALB   Europe Border checks    Movement restri~ Media      
-#&gt; </span><span style='color: #555555;'> 3</span><span> Algeria      DZA   Africa Border closure   Movement restri~ UN         
-#&gt; </span><span style='color: #555555;'> 4</span><span> Angola       AGO   Africa Closure of busi~ Social distanci~ Other orga~
-#&gt; </span><span style='color: #555555;'> 5</span><span> Antigua and~ ATG   Ameri~ Isolation and q~ Public health m~ Social med~
-#&gt; </span><span style='color: #555555;'> 6</span><span> Argentina    ARG   Ameri~ Limit public ga~ Social distanci~ Other      
-#&gt; </span><span style='color: #555555;'> 7</span><span> Armenia      ARM   Asia   Economic measur~ Governance and ~ </span><span style='color: #BB0000;'>NA</span><span>         
-#&gt; </span><span style='color: #555555;'> 8</span><span> Australia    AUS   Pacif~ Awareness campa~ Public health m~ </span><span style='color: #BB0000;'>NA</span><span>         
-#&gt; </span><span style='color: #555555;'> 9</span><span> Austria      AUT   Europe International f~ Movement restri~ </span><span style='color: #BB0000;'>NA</span><span>         
-#&gt; </span><span style='color: #555555;'>10</span><span> Azerbaijan   AZE   Asia   Health screenin~ Public health m~ </span><span style='color: #BB0000;'>NA</span><span>         
-#&gt; </span><span style='color: #555555;'># ... with 183 more rows, and 2 more variables: Enforcement_taxonomy </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   Log_type </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
+<span class='fu'>read_acaps_governments</span>()
+
 <span class='co'># unesco education data</span>
-<span class='fu'>read_unesco_education</span>()</div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
-#&gt; <span class='message'>cols(</span>
-#&gt; <span class='message'>  Date = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  ISO = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  Country = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  Status = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  Note = </span><span style='color: #BBBB00;'>col_logical()</span><span></span>
-#&gt; <span class='message'>)</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 41,714 x 5</span><span>
-#&gt;    Date       ISO   Country  Status                 Note 
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                  </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 17/02/2020 CHN   China    Partially open         </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 2</span><span> 17/02/2020 MNG   Mongolia Closed due to COVID-19 </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 3</span><span> 18/02/2020 CHN   China    Partially open         </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 4</span><span> 18/02/2020 MNG   Mongolia Closed due to COVID-19 </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 5</span><span> 19/02/2020 CHN   China    Partially open         </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 6</span><span> 19/02/2020 MNG   Mongolia Closed due to COVID-19 </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 7</span><span> 20/02/2020 CHN   China    Partially open         </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 8</span><span> 20/02/2020 MNG   Mongolia Closed due to COVID-19 </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 9</span><span> 21/02/2020 CHN   China    Closed due to COVID-19 </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'>10</span><span> 21/02/2020 MNG   Mongolia Closed due to COVID-19 </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'># ... with 41,704 more rows</span><span></div><div class='input'>
-</div></span></pre>
+<span class='fu'>read_unesco_education</span>()
+
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

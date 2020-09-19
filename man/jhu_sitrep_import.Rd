@@ -65,6 +65,8 @@ clean and plot jhu sitrep
 
 \examples{
 
+\dontrun{
+
 library(covid19viz)
 library(tidyverse)
 
@@ -86,5 +88,7 @@ jhu_sitrep_import(source = "confirmed") \%>\%
   jhu_sitrep_cumulative()
 
 jhu_sitrep_all_sources(country_region="Peru")
+
+}
 
 }

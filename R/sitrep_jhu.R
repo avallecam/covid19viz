@@ -24,6 +24,8 @@
 #'
 #' @examples
 #'
+#' \dontrun{
+#'
 #' library(covid19viz)
 #' library(tidyverse)
 #'
@@ -45,6 +47,8 @@
 #'   jhu_sitrep_cumulative()
 #'
 #' jhu_sitrep_all_sources(country_region="Peru")
+#'
+#' }
 #'
 jhu_sitrep_import <- function(source) {
   if (source=="confirmed") {

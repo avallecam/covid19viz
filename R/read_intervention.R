@@ -18,6 +18,8 @@
 #'
 #' @examples
 #'
+#' \dontrun{
+#'
 #' library(covid19viz)
 #' library(tidyverse)
 #'
@@ -39,6 +41,8 @@
 #'
 #' # unesco education data
 #' read_unesco_education()
+#'
+#' }
 #'
 
 read_google_global <- function() {

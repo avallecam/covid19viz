@@ -25,6 +25,8 @@
 #'
 #' @examples
 #'
+#' \dontrun{
+#'
 #' library(covid19viz)
 #' library(tidyverse)
 #'
@@ -39,6 +41,8 @@
 #'     who_sitrep_filter(country_region = "Peru") %>%
 #'     who_sitrep_ggline(y_cum_value = n_cum_conf,
 #'                       color = class, n_breaks = 10)
+#'
+#' }
 #'
 
 who_sitrep_import <- function(update) {
