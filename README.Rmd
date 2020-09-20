@@ -186,6 +186,113 @@ read_unesco_education() %>% glimpse()
 #> $ Note    <lgl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,...
 ```
 
+```{r,echo=FALSE,fig.height=4,fig.width=10,fig.retina=TRUE}
+# library(covidPeru); library(readr)
+library(covid19viz)
+# library(cdcper)
+library(tidyverse)
+library(lubridate)
+theme_set(theme_bw())
+
+
+# analysis time limits --------------------------------------------------------------
+
+min_analysis_date <- ymd(20200301)
+max_analysis_date <- Sys.Date()
+
+# covid19viz R package ----------------------------------------------------
+
+# _import intervention data ------------------------------------------------
+
+unesco <- read_unesco_education()
+# acaps <- read_acaps_governments()
+
+# no data in ACAPS
+# acaps %>% filter(ISO3=="PER")
+
+unesco_peru <- unesco %>% 
+  filter(ISO=="PER") %>% 
+  mutate(Date=dmy(Date)) %>% 
+  group_by(Status) %>% 
+  summarise(date_min=min(Date),
+            date_max=max(Date)) %>% 
+  rename(intervention_label=Status) %>% 
+  mutate(intervention=case_when(
+    intervention_label=="Closed due to COVID-19" ~ "closed",
+    intervention_label=="Partially open" ~ "partial"
+  ))
+# unesco_peru
+
+# _unite intervention data -------------------------------------------------
+
+interventions <- tibble(
+  date_min = ymd(20200628), 
+  date_max = ymd(20200709),
+  intervention_label = "Seroprevalence study",
+  intervention = "seroprev"
+) %>% 
+  union_all(
+    unesco_peru %>% 
+      mutate(date_max=if_else(date_max==max(date_max),
+                              max_analysis_date,
+                              date_max))
+  )
+# interventions
+
+# mobility data -----------------------------------------------------------
+
+mobility <- read_google_region_country(country_iso = "PE")
+# mobility %>% count(sub_region_1) %>% print(n=Inf)
+# mobility %>% count(country_region,sub_region_1,sub_region_2,metro_area) %>% print(n=Inf)
+mobility_lima <- mobility %>% 
+  filter(date<max_analysis_date) %>% 
+  filter(
+    magrittr::is_in(sub_region_1,c("Metropolitan Municipality of Lima",
+                                   "Callao Region"))) %>% 
+  mutate(across(c(sub_region_1,sub_region_2,metro_area),
+                str_replace_na,replacement = "")) %>% 
+  mutate(subregion=str_c(sub_region_1,"\n",sub_region_2,"\n",metro_area)) %>% 
+  mutate(subregion=str_trim(subregion)) %>% 
+  mutate(subregion=if_else(sub_region_1=="Metropolitan Municipality of Lima",
+                           "Metropolitan Municipality\nof Lima",subregion)) %>% 
+  # count(country_region,subregion)
+  filter(!(sub_region_1=="Metropolitan Municipality of Lima" &
+             sub_region_2=="")) %>%
+  # count(country_region,sub_region_1,sub_region_2,metro_area,subregion)
+  # pivot_longer()
+  pivot_longer(cols = -c(country_region_code:date,subregion),
+               names_to = "field",
+               names_pattern = "(.+)_percent_change_from_baseline",
+               values_to = "percent_change_from_baseline")
+
+# plot all --------------------------------------
+
+mobility_lima %>% 
+  mutate(field=str_replace_all(field,"_"," "),
+         field=str_to_sentence(field)) %>% 
+  ggplot() +
+  geom_rect(data = interventions,
+            aes(xmin = date_min, xmax = date_max, 
+                ymin = -Inf, ymax = Inf, 
+                fill =intervention_label),
+            alpha=0.2) +
+  geom_hline(aes(yintercept=0),lty=2) +
+  geom_line(aes(x = date,percent_change_from_baseline, color=subregion)) +
+  geom_smooth(aes(x = date,percent_change_from_baseline, color=subregion),
+              span = 0.1) +
+  facet_wrap(~field) +
+  colorspace::scale_color_discrete_qualitative() +
+  scale_x_date(date_breaks = "1 month",date_labels = "%b") +
+  # theme(legend.position="bottom")
+  labs(title = "Government interventions and Google mobility reports",
+       subtitle = "Lima Metropolitan Area and Callao Region, Peru 2020",
+       x = "Date",
+       y = "% change from baseline",
+       fill = "Interventions",
+       color = "Region")
+```
+
+
 
 ### Import initial stages of the WHO sitreps
 

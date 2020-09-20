@@ -75,7 +75,7 @@
       <h1>How to use covid19viz</h1>
                         <h4 class="author">Andree Valle</h4>
             
-            <h4 class="date">2020-09-19</h4>
+            <h4 class="date">2020-09-20</h4>
       
       
       <div class="hidden name"><code>how-to-use.Rmd</code></div>
@@ -84,43 +84,161 @@
 
     
     
-<div id="collect-data" class="section level2">
+<div id="example-1-analyse-intervention-and-mobility-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#collect-data" class="anchor"></a>Collect data</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(covid19viz)</a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rnaturalearth)</a>
+<a href="#example-1-analyse-intervention-and-mobility-data" class="anchor"></a>Example 1: Analyse intervention and mobility data</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># library(covidPeru); library(readr)</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(covid19viz)</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co"># library(cdcper)</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(lubridate)</a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="kw">theme_set</span>(<span class="kw">theme_bw</span>())</a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8"></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="co"># analysis time limits --------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb1-10" title="10"></a>
+<a class="sourceLine" id="cb1-11" title="11">min_analysis_date &lt;-<span class="st"> </span><span class="kw">ymd</span>(<span class="dv">20200301</span>)</a>
+<a class="sourceLine" id="cb1-12" title="12">max_analysis_date &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>()</a>
+<a class="sourceLine" id="cb1-13" title="13"></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="co"># covid19viz R package ----------------------------------------------------</span></a>
+<a class="sourceLine" id="cb1-15" title="15"></a>
+<a class="sourceLine" id="cb1-16" title="16"><span class="co"># _import intervention data ------------------------------------------------</span></a>
+<a class="sourceLine" id="cb1-17" title="17"></a>
+<a class="sourceLine" id="cb1-18" title="18">unesco &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_google_global.html">read_unesco_education</a></span>()</a>
+<a class="sourceLine" id="cb1-19" title="19"><span class="co"># acaps &lt;- read_acaps_governments()</span></a>
+<a class="sourceLine" id="cb1-20" title="20"></a>
+<a class="sourceLine" id="cb1-21" title="21"><span class="co"># no data in ACAPS</span></a>
+<a class="sourceLine" id="cb1-22" title="22"><span class="co"># acaps %&gt;% filter(ISO3=="PER")</span></a>
+<a class="sourceLine" id="cb1-23" title="23"></a>
+<a class="sourceLine" id="cb1-24" title="24">unesco_peru &lt;-<span class="st"> </span>unesco <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-25" title="25"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(ISO<span class="op">==</span><span class="st">"PER"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-26" title="26"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Date=</span><span class="kw">dmy</span>(Date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-27" title="27"><span class="st">  </span><span class="kw">group_by</span>(Status) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-28" title="28"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">date_min=</span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span>(Date),</a>
+<a class="sourceLine" id="cb1-29" title="29">            <span class="dt">date_max=</span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(Date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-30" title="30"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">intervention_label=</span>Status) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-31" title="31"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">intervention=</span><span class="kw">case_when</span>(</a>
+<a class="sourceLine" id="cb1-32" title="32">    intervention_label<span class="op">==</span><span class="st">"Closed due to COVID-19"</span> <span class="op">~</span><span class="st"> "closed"</span>,</a>
+<a class="sourceLine" id="cb1-33" title="33">    intervention_label<span class="op">==</span><span class="st">"Partially open"</span> <span class="op">~</span><span class="st"> "partial"</span></a>
+<a class="sourceLine" id="cb1-34" title="34">  ))</a>
+<a class="sourceLine" id="cb1-35" title="35"><span class="co"># unesco_peru</span></a>
+<a class="sourceLine" id="cb1-36" title="36"></a>
+<a class="sourceLine" id="cb1-37" title="37"><span class="co"># _unite intervention data -------------------------------------------------</span></a>
+<a class="sourceLine" id="cb1-38" title="38"></a>
+<a class="sourceLine" id="cb1-39" title="39">interventions &lt;-<span class="st"> </span><span class="kw">tibble</span>(</a>
+<a class="sourceLine" id="cb1-40" title="40">  <span class="dt">date_min =</span> <span class="kw">ymd</span>(<span class="dv">20200628</span>), </a>
+<a class="sourceLine" id="cb1-41" title="41">  <span class="dt">date_max =</span> <span class="kw">ymd</span>(<span class="dv">20200709</span>),</a>
+<a class="sourceLine" id="cb1-42" title="42">  <span class="dt">intervention_label =</span> <span class="st">"Seroprevalence study"</span>,</a>
+<a class="sourceLine" id="cb1-43" title="43">  <span class="dt">intervention =</span> <span class="st">"seroprev"</span></a>
+<a class="sourceLine" id="cb1-44" title="44">) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-45" title="45"><span class="st">  </span><span class="kw">union_all</span>(</a>
+<a class="sourceLine" id="cb1-46" title="46">    unesco_peru <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-47" title="47"><span class="st">      </span><span class="kw">mutate</span>(<span class="dt">date_max=</span><span class="kw">if_else</span>(date_max<span class="op">==</span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(date_max),</a>
+<a class="sourceLine" id="cb1-48" title="48">                              max_analysis_date,</a>
+<a class="sourceLine" id="cb1-49" title="49">                              date_max))</a>
+<a class="sourceLine" id="cb1-50" title="50">  )</a>
+<a class="sourceLine" id="cb1-51" title="51">interventions</a>
+<a class="sourceLine" id="cb1-52" title="52"><span class="co">#&gt; # A tibble: 3 x 4</span></a>
+<a class="sourceLine" id="cb1-53" title="53"><span class="co">#&gt;   date_min   date_max   intervention_label     intervention</span></a>
+<a class="sourceLine" id="cb1-54" title="54"><span class="co">#&gt;   &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;                  &lt;chr&gt;       </span></a>
+<a class="sourceLine" id="cb1-55" title="55"><span class="co">#&gt; 1 2020-06-28 2020-07-09 Seroprevalence study   seroprev    </span></a>
+<a class="sourceLine" id="cb1-56" title="56"><span class="co">#&gt; 2 2020-03-16 2020-06-30 Closed due to COVID-19 closed      </span></a>
+<a class="sourceLine" id="cb1-57" title="57"><span class="co">#&gt; 3 2020-07-01 2020-09-20 Partially open         partial</span></a>
+<a class="sourceLine" id="cb1-58" title="58"></a>
+<a class="sourceLine" id="cb1-59" title="59"><span class="co"># interventions %&gt;% </span></a>
+<a class="sourceLine" id="cb1-60" title="60"><span class="co">#   writexl::write_xlsx("table/02-seroprev-supp-table05.xlsx")</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co"># mobility data -----------------------------------------------------------</span></a>
 <a class="sourceLine" id="cb2-3" title="3"></a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="co">#world data</span></a>
-<a class="sourceLine" id="cb2-5" title="5">world_map =<span class="st"> </span><span class="kw">ne_countries</span>(<span class="dt">returnclass =</span> <span class="st">"sf"</span>)</a>
-<a class="sourceLine" id="cb2-6" title="6">country_metadata &lt;-<span class="st"> </span>world_map <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-7" title="7"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="kw">str_detect</span>(<span class="dt">string =</span> formal_en,</a>
-<a class="sourceLine" id="cb2-8" title="8">                    <span class="dt">pattern =</span> <span class="st">"United States|US|Brazil|Russia|Peru|India|United Kingdom"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-9" title="9"><span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-10" title="10"><span class="st">  </span><span class="kw">select</span>(<span class="kw">contains</span>(<span class="st">"name"</span>),pop_est,pop_year,lastcensus,economy,income_grp,iso_a3)</a>
-<a class="sourceLine" id="cb2-11" title="11"></a>
-<a class="sourceLine" id="cb2-12" title="12"><span class="co">#case data</span></a>
-<a class="sourceLine" id="cb2-13" title="13">all &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">country_region=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"US"</span>,<span class="st">"Brazil"</span>,<span class="st">"Russia"</span>,<span class="st">"Peru"</span>,<span class="st">"India"</span>,<span class="st">"United Kingdom"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-14" title="14"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">counts=</span><span class="kw">map</span>(<span class="dt">.x =</span> country_region,<span class="dt">.f =</span> jhu_sitrep_all_sources))</a>
-<a class="sourceLine" id="cb2-15" title="15"></a>
-<a class="sourceLine" id="cb2-16" title="16">all <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-17" title="17"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>country_region) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-18" title="18"><span class="st">  </span><span class="kw">unnest</span>(<span class="dt">cols =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(counts)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-19" title="19"><span class="st">  </span><span class="kw">select</span>(country_region,source,sum_data) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-20" title="20"><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> source,<span class="dt">values_from =</span> sum_data) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-21" title="21"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">active=</span>confirmed<span class="op">-</span>deaths<span class="op">-</span>recovered) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-22" title="22"><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="op">-</span>country_region,<span class="dt">names_to =</span> <span class="st">"source"</span>,<span class="dt">values_to =</span> <span class="st">"sum_data"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-23" title="23"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">country_region=</span><span class="kw">if_else</span>(country_region<span class="op">==</span><span class="st">"US"</span>,<span class="st">"United States"</span>,country_region)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-24" title="24"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">name=</span>country_region) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-25" title="25"><span class="st">  </span><span class="co">#join</span></a>
-<a class="sourceLine" id="cb2-26" title="26"><span class="st">  </span><span class="kw">left_join</span>(country_metadata) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-27" title="27"><span class="st">  </span><span class="kw">select</span>(name,source,sum_data,pop_est,lastcensus<span class="co">#,economy,income_grp</span></a>
-<a class="sourceLine" id="cb2-28" title="28">         ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-29" title="29"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rate=</span>sum_data<span class="op">/</span>pop_est<span class="op">*</span><span class="fl">1e6</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-30" title="30"><span class="st">  </span><span class="co"># group_by(source) %&gt;% </span></a>
-<a class="sourceLine" id="cb2-31" title="31"><span class="st">  </span><span class="kw">arrange</span>(source,<span class="kw">desc</span>(rate)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-32" title="32"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-33" title="33"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span>(<span class="dt">bootstrap_options =</span> <span class="st">"striped"</span>, <span class="dt">full_width =</span> F)</a></code></pre></div>
+<a class="sourceLine" id="cb2-4" title="4">mobility &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_google_global.html">read_google_region_country</a></span>(<span class="dt">country_iso =</span> <span class="st">"PE"</span>)</a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co"># mobility %&gt;% count(sub_region_1) %&gt;% print(n=Inf)</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="co"># mobility %&gt;% count(country_region,sub_region_1,sub_region_2,metro_area) %&gt;% print(n=Inf)</span></a>
+<a class="sourceLine" id="cb2-7" title="7">mobility_lima &lt;-<span class="st"> </span>mobility <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(date<span class="op">&lt;</span>max_analysis_date) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(</a>
+<a class="sourceLine" id="cb2-10" title="10">    magrittr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/magrittr/man/aliases.html">is_in</a></span>(sub_region_<span class="dv">1</span>,<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Metropolitan Municipality of Lima"</span>,</a>
+<a class="sourceLine" id="cb2-11" title="11">                                   <span class="st">"Callao Region"</span>))) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="st">  </span><span class="kw">mutate</span>(<span class="kw">across</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(sub_region_<span class="dv">1</span>,sub_region_<span class="dv">2</span>,metro_area),</a>
+<a class="sourceLine" id="cb2-13" title="13">                str_replace_na,<span class="dt">replacement =</span> <span class="st">""</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">subregion=</span><span class="kw">str_c</span>(sub_region_<span class="dv">1</span>,<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>,sub_region_<span class="dv">2</span>,<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>,metro_area)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">subregion=</span><span class="kw">str_trim</span>(subregion)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-16" title="16"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">subregion=</span><span class="kw">if_else</span>(sub_region_<span class="dv">1</span><span class="op">==</span><span class="st">"Metropolitan Municipality of Lima"</span>,</a>
+<a class="sourceLine" id="cb2-17" title="17">                           <span class="st">"Metropolitan Municipality</span><span class="ch">\n</span><span class="st">of Lima"</span>,subregion)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-18" title="18"><span class="st">  </span><span class="co"># count(country_region,subregion)</span></a>
+<a class="sourceLine" id="cb2-19" title="19"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="op">!</span>(sub_region_<span class="dv">1</span><span class="op">==</span><span class="st">"Metropolitan Municipality of Lima"</span> <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb2-20" title="20"><span class="st">             </span>sub_region_<span class="dv">2</span><span class="op">==</span><span class="st">""</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-21" title="21"><span class="st">  </span><span class="co"># count(country_region,sub_region_1,sub_region_2,metro_area,subregion)</span></a>
+<a class="sourceLine" id="cb2-22" title="22"><span class="st">  </span><span class="co"># pivot_longer()</span></a>
+<a class="sourceLine" id="cb2-23" title="23"><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(country_region_code<span class="op">:</span>date,subregion),</a>
+<a class="sourceLine" id="cb2-24" title="24">               <span class="dt">names_to =</span> <span class="st">"field"</span>,</a>
+<a class="sourceLine" id="cb2-25" title="25">               <span class="dt">names_pattern =</span> <span class="st">"(.+)_percent_change_from_baseline"</span>,</a>
+<a class="sourceLine" id="cb2-26" title="26">               <span class="dt">values_to =</span> <span class="st">"percent_change_from_baseline"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"></a>
+<a class="sourceLine" id="cb3-2" title="2">mobility_lima <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">field=</span><span class="kw">str_replace_all</span>(field,<span class="st">"_"</span>,<span class="st">" "</span>),</a>
+<a class="sourceLine" id="cb3-4" title="4">         <span class="dt">field=</span><span class="kw">str_to_sentence</span>(field)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="st">  </span><span class="kw">geom_rect</span>(<span class="dt">data =</span> interventions,</a>
+<a class="sourceLine" id="cb3-7" title="7">            <span class="kw">aes</span>(<span class="dt">xmin =</span> date_min, <span class="dt">xmax =</span> date_max, </a>
+<a class="sourceLine" id="cb3-8" title="8">                <span class="dt">ymin =</span> <span class="op">-</span><span class="ot">Inf</span>, <span class="dt">ymax =</span> <span class="ot">Inf</span>, </a>
+<a class="sourceLine" id="cb3-9" title="9">                <span class="dt">fill =</span>intervention_label),</a>
+<a class="sourceLine" id="cb3-10" title="10">            <span class="dt">alpha=</span><span class="fl">0.2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="kw">aes</span>(<span class="dt">yintercept=</span><span class="dv">0</span>),<span class="dt">lty=</span><span class="dv">2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> date,percent_change_from_baseline, <span class="dt">color=</span>subregion)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="kw">aes</span>(<span class="dt">x =</span> date,percent_change_from_baseline, <span class="dt">color=</span>subregion),</a>
+<a class="sourceLine" id="cb3-14" title="14">              <span class="dt">span =</span> <span class="fl">0.1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>field) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-16" title="16"><span class="st">  </span>colorspace<span class="op">::</span><span class="kw"><a href="http://colorspace.R-Forge.R-project.org//reference/scale_colour_discrete_qualitative.html">scale_color_discrete_qualitative</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="st">  </span><span class="kw">scale_x_date</span>(<span class="dt">date_breaks =</span> <span class="st">"1 month"</span>,<span class="dt">date_labels =</span> <span class="st">"%b"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-18" title="18"><span class="st">  </span><span class="co"># theme(legend.position="bottom")</span></a>
+<a class="sourceLine" id="cb3-19" title="19"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Government interventions and Google mobility reports"</span>,</a>
+<a class="sourceLine" id="cb3-20" title="20">       <span class="dt">subtitle =</span> <span class="st">"Lima Metropolitan Area and Callao Region, Peru 2020"</span>,</a>
+<a class="sourceLine" id="cb3-21" title="21">       <span class="dt">x =</span> <span class="st">"Date"</span>,</a>
+<a class="sourceLine" id="cb3-22" title="22">       <span class="dt">y =</span> <span class="st">"% change from baseline"</span>,</a>
+<a class="sourceLine" id="cb3-23" title="23">       <span class="dt">fill =</span> <span class="st">"Interventions"</span>,</a>
+<a class="sourceLine" id="cb3-24" title="24">       <span class="dt">color =</span> <span class="st">"Region"</span>)</a></code></pre></div>
+<p><img src="how-to-use_files/figure-html/unnamed-chunk-4-1.png"><!-- --></p>
+</div>
+<div id="example-2-compare-event-rates-among-countries" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example-2-compare-event-rates-among-countries" class="anchor"></a>Example 2: Compare event rates among countries</h2>
+<div id="collect-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#collect-data" class="anchor"></a>Collect data</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(covid19viz)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rnaturalearth)</a>
+<a class="sourceLine" id="cb5-3" title="3"></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">#world data</span></a>
+<a class="sourceLine" id="cb5-5" title="5">world_map =<span class="st"> </span><span class="kw">ne_countries</span>(<span class="dt">returnclass =</span> <span class="st">"sf"</span>)</a>
+<a class="sourceLine" id="cb5-6" title="6">country_metadata &lt;-<span class="st"> </span>world_map <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="kw">str_detect</span>(<span class="dt">string =</span> formal_en,</a>
+<a class="sourceLine" id="cb5-8" title="8">                    <span class="dt">pattern =</span> <span class="st">"United States|US|Brazil|Russia|Peru|India|United Kingdom"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="st">  </span><span class="kw">select</span>(<span class="kw">contains</span>(<span class="st">"name"</span>),pop_est,pop_year,lastcensus,economy,income_grp,iso_a3)</a>
+<a class="sourceLine" id="cb5-11" title="11"></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="co">#case data</span></a>
+<a class="sourceLine" id="cb5-13" title="13">all &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">country_region=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"US"</span>,<span class="st">"Brazil"</span>,<span class="st">"Russia"</span>,<span class="st">"Peru"</span>,<span class="st">"India"</span>,<span class="st">"United Kingdom"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">counts=</span><span class="kw">map</span>(<span class="dt">.x =</span> country_region,<span class="dt">.f =</span> jhu_sitrep_all_sources))</a>
+<a class="sourceLine" id="cb5-15" title="15"></a>
+<a class="sourceLine" id="cb5-16" title="16">all <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-17" title="17"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>country_region) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-18" title="18"><span class="st">  </span><span class="kw">unnest</span>(<span class="dt">cols =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(counts)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="st">  </span><span class="kw">select</span>(country_region,source,sum_data) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-20" title="20"><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> source,<span class="dt">values_from =</span> sum_data) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-21" title="21"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">active=</span>confirmed<span class="op">-</span>deaths<span class="op">-</span>recovered) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-22" title="22"><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="op">-</span>country_region,<span class="dt">names_to =</span> <span class="st">"source"</span>,<span class="dt">values_to =</span> <span class="st">"sum_data"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-23" title="23"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">country_region=</span><span class="kw">if_else</span>(country_region<span class="op">==</span><span class="st">"US"</span>,<span class="st">"United States"</span>,country_region)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-24" title="24"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">name=</span>country_region) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-25" title="25"><span class="st">  </span><span class="co">#join</span></a>
+<a class="sourceLine" id="cb5-26" title="26"><span class="st">  </span><span class="kw">left_join</span>(country_metadata) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-27" title="27"><span class="st">  </span><span class="kw">select</span>(name,source,sum_data,pop_est,lastcensus<span class="co">#,economy,income_grp</span></a>
+<a class="sourceLine" id="cb5-28" title="28">         ) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-29" title="29"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rate=</span>sum_data<span class="op">/</span>pop_est<span class="op">*</span><span class="fl">1e6</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-30" title="30"><span class="st">  </span><span class="co"># group_by(source) %&gt;% </span></a>
+<a class="sourceLine" id="cb5-31" title="31"><span class="st">  </span><span class="kw">arrange</span>(source,<span class="kw">desc</span>(rate)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-32" title="32"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-33" title="33"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span>(<span class="dt">bootstrap_options =</span> <span class="st">"striped"</span>, <span class="dt">full_width =</span> F)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">name</th>
@@ -134,146 +252,146 @@
 <tr class="odd">
 <td align="left">United States</td>
 <td align="left">active</td>
-<td align="right">3968898</td>
+<td align="right">3988265</td>
 <td align="right">313973000</td>
 <td align="right">2010</td>
-<td align="right">12640.88950</td>
+<td align="right">12702.57315</td>
 </tr>
 <tr class="even">
 <td align="left">United Kingdom</td>
 <td align="left">active</td>
-<td align="right">344382</td>
+<td align="right">348770</td>
 <td align="right">62262000</td>
 <td align="right">2011</td>
-<td align="right">5531.17471</td>
+<td align="right">5601.65109</td>
 </tr>
 <tr class="odd">
 <td align="left">Peru</td>
 <td align="left">active</td>
-<td align="right">124439</td>
+<td align="right">130616</td>
 <td align="right">29546963</td>
 <td align="right">2007</td>
-<td align="right">4211.56652</td>
+<td align="right">4420.62353</td>
 </tr>
 <tr class="even">
 <td align="left">Brazil</td>
 <td align="left">active</td>
-<td align="right">461851</td>
+<td align="right">454815</td>
 <td align="right">198739269</td>
 <td align="right">2010</td>
-<td align="right">2323.90409</td>
+<td align="right">2288.50092</td>
 </tr>
 <tr class="odd">
 <td align="left">Russia</td>
 <td align="left">active</td>
-<td align="right">169407</td>
+<td align="right">170100</td>
 <td align="right">140041247</td>
 <td align="right">2010</td>
-<td align="right">1209.69360</td>
+<td align="right">1214.64214</td>
 </tr>
 <tr class="even">
 <td align="left">India</td>
 <td align="left">active</td>
-<td align="right">1017754</td>
+<td align="right">1010824</td>
 <td align="right">1166079220</td>
 <td align="right">2011</td>
-<td align="right">872.80005</td>
+<td align="right">866.85706</td>
 </tr>
 <tr class="odd">
 <td align="left">Peru</td>
 <td align="left">confirmed</td>
-<td align="right">750098</td>
+<td align="right">756412</td>
 <td align="right">29546963</td>
 <td align="right">2007</td>
-<td align="right">25386.63618</td>
+<td align="right">25600.32989</td>
 </tr>
 <tr class="even">
 <td align="left">Brazil</td>
 <td align="left">confirmed</td>
-<td align="right">4495183</td>
+<td align="right">4528240</td>
 <td align="right">198739269</td>
 <td align="right">2010</td>
-<td align="right">22618.49418</td>
+<td align="right">22784.82769</td>
 </tr>
 <tr class="odd">
 <td align="left">United States</td>
 <td align="left">confirmed</td>
-<td align="right">6723933</td>
+<td align="right">6764970</td>
 <td align="right">313973000</td>
 <td align="right">2010</td>
-<td align="right">21415.64084</td>
+<td align="right">21546.34316</td>
 </tr>
 <tr class="even">
 <td align="left">Russia</td>
 <td align="left">confirmed</td>
-<td align="right">1086955</td>
+<td align="right">1092915</td>
 <td align="right">140041247</td>
 <td align="right">2010</td>
-<td align="right">7761.67753</td>
+<td align="right">7804.23642</td>
 </tr>
 <tr class="odd">
 <td align="left">United Kingdom</td>
 <td align="left">confirmed</td>
-<td align="right">388416</td>
+<td align="right">392845</td>
 <td align="right">62262000</td>
 <td align="right">2011</td>
-<td align="right">6238.41187</td>
+<td align="right">6309.54675</td>
 </tr>
 <tr class="even">
 <td align="left">India</td>
 <td align="left">confirmed</td>
-<td align="right">5214677</td>
+<td align="right">5400619</td>
 <td align="right">1166079220</td>
 <td align="right">2011</td>
-<td align="right">4471.97490</td>
+<td align="right">4631.43405</td>
 </tr>
 <tr class="odd">
 <td align="left">Peru</td>
 <td align="left">deaths</td>
-<td align="right">31146</td>
+<td align="right">31283</td>
 <td align="right">29546963</td>
 <td align="right">2007</td>
-<td align="right">1054.11849</td>
+<td align="right">1058.75518</td>
 </tr>
 <tr class="even">
 <td align="left">Brazil</td>
 <td align="left">deaths</td>
-<td align="right">135793</td>
+<td align="right">136532</td>
 <td align="right">198739269</td>
 <td align="right">2010</td>
-<td align="right">683.27211</td>
+<td align="right">686.99055</td>
 </tr>
 <tr class="odd">
 <td align="left">United Kingdom</td>
 <td align="left">deaths</td>
-<td align="right">41821</td>
+<td align="right">41848</td>
 <td align="right">62262000</td>
 <td align="right">2011</td>
-<td align="right">671.69381</td>
+<td align="right">672.12746</td>
 </tr>
 <tr class="even">
 <td align="left">United States</td>
 <td align="left">deaths</td>
-<td align="right">198570</td>
+<td align="right">199259</td>
 <td align="right">313973000</td>
 <td align="right">2010</td>
-<td align="right">632.44292</td>
+<td align="right">634.63737</td>
 </tr>
 <tr class="odd">
 <td align="left">Russia</td>
 <td align="left">deaths</td>
-<td align="right">19128</td>
+<td align="right">19270</td>
 <td align="right">140041247</td>
 <td align="right">2010</td>
-<td align="right">136.58833</td>
+<td align="right">137.60232</td>
 </tr>
 <tr class="even">
 <td align="left">India</td>
 <td align="left">deaths</td>
-<td align="right">84372</td>
+<td align="right">86752</td>
 <td align="right">1166079220</td>
 <td align="right">2011</td>
-<td align="right">72.35529</td>
+<td align="right">74.39632</td>
 </tr>
 <tr class="odd">
 <td align="left">Peru</td>
@@ -286,128 +404,129 @@
 <tr class="even">
 <td align="left">Brazil</td>
 <td align="left">recovered</td>
-<td align="right">3897539</td>
+<td align="right">3936893</td>
 <td align="right">198739269</td>
 <td align="right">2010</td>
-<td align="right">19611.31798</td>
+<td align="right">19809.33622</td>
 </tr>
 <tr class="odd">
 <td align="left">United States</td>
 <td align="left">recovered</td>
-<td align="right">2556465</td>
+<td align="right">2577446</td>
 <td align="right">313973000</td>
 <td align="right">2010</td>
-<td align="right">8142.30842</td>
+<td align="right">8209.13263</td>
 </tr>
 <tr class="even">
 <td align="left">Russia</td>
 <td align="left">recovered</td>
-<td align="right">898420</td>
+<td align="right">903545</td>
 <td align="right">140041247</td>
 <td align="right">2010</td>
-<td align="right">6415.39560</td>
+<td align="right">6451.99196</td>
 </tr>
 <tr class="odd">
 <td align="left">India</td>
 <td align="left">recovered</td>
-<td align="right">4112551</td>
+<td align="right">4303043</td>
 <td align="right">1166079220</td>
 <td align="right">2011</td>
-<td align="right">3526.81956</td>
+<td align="right">3690.18067</td>
 </tr>
 <tr class="even">
 <td align="left">United Kingdom</td>
 <td align="left">recovered</td>
-<td align="right">2213</td>
+<td align="right">2227</td>
 <td align="right">62262000</td>
 <td align="right">2011</td>
-<td align="right">35.54335</td>
+<td align="right">35.76821</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="plot-trends" class="section level2">
-<h2 class="hasAnchor">
-<a href="#plot-trends" class="anchor"></a>Plot trends</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">all_time &lt;-<span class="st"> </span>all <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">table=</span><span class="kw">map</span>(<span class="dt">.x =</span> counts,<span class="dt">.f =</span> jhu_sitrep_all_sources_tidy)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>country_region) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="st">  </span><span class="kw">unnest</span>(<span class="dt">cols =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(table)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(confirmed_cumulative<span class="op">&gt;</span><span class="dv">0</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-6" title="6"><span class="st">  </span><span class="co">#active cases</span></a>
-<a class="sourceLine" id="cb3-7" title="7"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">active_cumulative=</span>confirmed_cumulative<span class="op">-</span>deaths_cumulative<span class="op">-</span>recovered_cumulative,</a>
-<a class="sourceLine" id="cb3-8" title="8">         <span class="dt">active_incidence=</span>confirmed_incidence<span class="op">-</span>deaths_incidence<span class="op">-</span>recovered_incidence) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-9" title="9"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">country_region=</span><span class="kw">if_else</span>(country_region<span class="op">==</span><span class="st">"US"</span>,<span class="st">"United States"</span>,</a>
-<a class="sourceLine" id="cb3-10" title="10">                                country_region)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-11" title="11"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">name=</span>country_region) <span class="op">%&gt;%</span><span class="st"> </span><span class="co">#glimpse() </span></a>
-<a class="sourceLine" id="cb3-12" title="12"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>counts) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-13" title="13"><span class="st">  </span><span class="kw">pivot_longer</span>(</a>
-<a class="sourceLine" id="cb3-14" title="14">    <span class="co"># cols = confirmed_cumulative:recovered_incidence,</span></a>
-<a class="sourceLine" id="cb3-15" title="15">    <span class="dt">cols =</span> confirmed_cumulative<span class="op">:</span>active_incidence,</a>
-<a class="sourceLine" id="cb3-16" title="16">    <span class="dt">names_to =</span> <span class="st">"indicator"</span>,<span class="dt">values_to =</span> <span class="st">"value"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-17" title="17"><span class="st">  </span><span class="co">#join</span></a>
-<a class="sourceLine" id="cb3-18" title="18"><span class="st">  </span><span class="kw">left_join</span>(country_metadata) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-19" title="19"><span class="st">  </span><span class="kw">select</span>(iso_a3,name<span class="op">:</span>value,pop_est,lastcensus) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-20" title="20"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rate=</span>value<span class="op">/</span>pop_est<span class="op">*</span><span class="fl">1e6</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co">#count(indicator)</span></a>
-<a class="sourceLine" id="cb3-21" title="21"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">name=</span><span class="kw">fct_reorder</span>(<span class="dt">.f =</span> name,<span class="dt">.x =</span> rate,<span class="dt">.fun =</span> max)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-22" title="22"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">indicator=</span><span class="kw">fct_relevel</span>(indicator,</a>
-<a class="sourceLine" id="cb3-23" title="23">                               <span class="st">"confirmed_cumulative"</span>,</a>
-<a class="sourceLine" id="cb3-24" title="24">                               <span class="st">"confirmed_incidence"</span>,</a>
-<a class="sourceLine" id="cb3-25" title="25">                               <span class="st">"deaths_cumulative"</span>,</a>
-<a class="sourceLine" id="cb3-26" title="26">                               <span class="st">"deaths_incidence"</span>,</a>
-<a class="sourceLine" id="cb3-27" title="27">                               <span class="st">"recovered_cumulative"</span>,</a>
-<a class="sourceLine" id="cb3-28" title="28">                               <span class="st">"recovered_incidence"</span>,</a>
-<a class="sourceLine" id="cb3-29" title="29">                               <span class="st">"active_cumulative"</span>,</a>
-<a class="sourceLine" id="cb3-30" title="30">                               <span class="st">"active_incidence"</span></a>
-<a class="sourceLine" id="cb3-31" title="31">                               )) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-32" title="32"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(date<span class="op">&gt;</span>lubridate<span class="op">::</span><span class="kw"><a href="http://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span>(<span class="dv">20200315</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-33" title="33"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">look=</span><span class="kw">if_else</span>(iso_a3<span class="op">==</span><span class="st">"PER"</span>,<span class="st">"PER"</span>,<span class="st">"NOT"</span>))</a>
-<a class="sourceLine" id="cb3-34" title="34">  <span class="co"># group_by(name,indicator) %&gt;% </span></a>
-<a class="sourceLine" id="cb3-35" title="35">  <span class="co"># mutate(label=max(rate)) %&gt;% </span></a>
-<a class="sourceLine" id="cb3-36" title="36">  <span class="co"># ungroup()</span></a>
-<a class="sourceLine" id="cb3-37" title="37"></a>
-<a class="sourceLine" id="cb3-38" title="38">all_time <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-39" title="39"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> date,<span class="dt">y =</span> rate,<span class="dt">colour =</span> name)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-40" title="40"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> all_time <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(look<span class="op">!=</span><span class="st">"PER"</span>),</a>
-<a class="sourceLine" id="cb3-41" title="41">            <span class="dt">lwd=</span><span class="dv">1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-42" title="42"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="kw">vars</span>(indicator),<span class="dt">scales =</span> <span class="st">"free"</span>,<span class="dt">ncol =</span> <span class="dv">2</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-43" title="43"><span class="st">  </span><span class="co"># scale_colour_viridis_d(option = "A")</span></a>
-<a class="sourceLine" id="cb3-44" title="44"><span class="st">  </span>colorspace<span class="op">::</span><span class="kw"><a href="http://colorspace.R-Forge.R-project.org//reference/scale_colour_discrete_qualitative.html">scale_color_discrete_qualitative</a></span>(<span class="dt">palette =</span> <span class="st">"Set 2"</span>,</a>
-<a class="sourceLine" id="cb3-45" title="45">                                               <span class="dt">guide =</span> <span class="st">'none'</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-46" title="46"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> all_time <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(look<span class="op">==</span><span class="st">"PER"</span>),</a>
-<a class="sourceLine" id="cb3-47" title="47">            <span class="dt">color=</span><span class="st">"red"</span>,<span class="dt">lwd=</span><span class="dv">1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-48" title="48"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">xlim</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(lubridate<span class="op">::</span><span class="kw"><a href="http://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span>(<span class="dv">20200315</span>),<span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>()<span class="op">+</span><span class="dv">5</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-49" title="49"><span class="st">  </span>ggrepel<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span>(<span class="dt">data =</span> all_time <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-50" title="50"><span class="st">                           </span><span class="kw">group_by</span>(name,indicator) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-51" title="51"><span class="st">                           </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(date<span class="op">==</span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-52" title="52"><span class="st">                           </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-53" title="53"><span class="st">                             </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(look<span class="op">!=</span><span class="st">"PER"</span>),</a>
-<a class="sourceLine" id="cb3-54" title="54">                         <span class="kw">aes</span>(<span class="dt">label =</span> iso_a3),</a>
-<a class="sourceLine" id="cb3-55" title="55">                         <span class="dt">xlim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>()<span class="op">+</span><span class="dv">1</span>, <span class="ot">NA</span>),</a>
-<a class="sourceLine" id="cb3-56" title="56">                         <span class="dt">hjust =</span> <span class="dv">1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-57" title="57"><span class="st">  </span>ggrepel<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span>(<span class="dt">data =</span> all_time <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-58" title="58"><span class="st">                             </span><span class="kw">group_by</span>(name,indicator) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-59" title="59"><span class="st">                             </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(date<span class="op">==</span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-60" title="60"><span class="st">                             </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-61" title="61"><span class="st">                             </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(look<span class="op">==</span><span class="st">"PER"</span>),</a>
-<a class="sourceLine" id="cb3-62" title="62">                           <span class="dt">color=</span><span class="st">"red"</span>,</a>
-<a class="sourceLine" id="cb3-63" title="63">                           <span class="kw">aes</span>(<span class="dt">label =</span> iso_a3),</a>
-<a class="sourceLine" id="cb3-64" title="64">                           <span class="dt">xlim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>()<span class="op">+</span><span class="dv">1</span>, <span class="ot">NA</span>),</a>
-<a class="sourceLine" id="cb3-65" title="65">                           <span class="dt">hjust =</span> <span class="dv">1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-66" title="66"><span class="st">  </span><span class="co"># scale_y_log10(</span></a>
-<a class="sourceLine" id="cb3-67" title="67"><span class="st">  </span><span class="co">#   breaks = 10^(-10:10), </span></a>
-<a class="sourceLine" id="cb3-68" title="68"><span class="st">  </span><span class="co">#   minor_breaks = rep(1:9, 21)*(10^rep(-10:10, each=9))</span></a>
-<a class="sourceLine" id="cb3-69" title="69"><span class="st">  </span><span class="co"># ) +</span></a>
-<a class="sourceLine" id="cb3-70" title="70"><span class="st">  </span><span class="co"># # scale_y_log10(</span></a>
-<a class="sourceLine" id="cb3-71" title="71"><span class="st">  </span><span class="co"># #   # breaks = scales::pretty_breaks(n = 10)</span></a>
-<a class="sourceLine" id="cb3-72" title="72"><span class="st">  </span><span class="co"># #   #     breaks = scales::trans_breaks("log10", function(x) 10^x),</span></a>
-<a class="sourceLine" id="cb3-73" title="73"><span class="st">  </span><span class="co"># #   #     labels = scales::trans_format("log10", scales::math_format(10^.x))</span></a>
-<a class="sourceLine" id="cb3-74" title="74"><span class="st">  </span><span class="co"># #   ) +</span></a>
-<a class="sourceLine" id="cb3-75" title="75"><span class="st">  </span><span class="co"># # coord_trans(y="log10") +</span></a>
-<a class="sourceLine" id="cb3-76" title="76"><span class="st">  </span><span class="co"># annotation_logticks(sides = "lb") +</span></a>
-<a class="sourceLine" id="cb3-77" title="77"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"World comparison"</span>,</a>
-<a class="sourceLine" id="cb3-78" title="78">       <span class="dt">x =</span> <span class="st">"Date"</span>,<span class="dt">y=</span><span class="st">"Rate of Events (Per Million Hab.)"</span>)</a></code></pre></div>
-<p><img src="how-to-use_files/figure-html/unnamed-chunk-3-1.png"><!-- --></p>
+<div id="plot-trends" class="section level3">
+<h3 class="hasAnchor">
+<a href="#plot-trends" class="anchor"></a>Plot trends</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">all_time &lt;-<span class="st"> </span>all <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">table=</span><span class="kw">map</span>(<span class="dt">.x =</span> counts,<span class="dt">.f =</span> jhu_sitrep_all_sources_tidy)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>country_region) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="st">  </span><span class="kw">unnest</span>(<span class="dt">cols =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(table)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(confirmed_cumulative<span class="op">&gt;</span><span class="dv">0</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="st">  </span><span class="co">#active cases</span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">active_cumulative=</span>confirmed_cumulative<span class="op">-</span>deaths_cumulative<span class="op">-</span>recovered_cumulative,</a>
+<a class="sourceLine" id="cb6-8" title="8">         <span class="dt">active_incidence=</span>confirmed_incidence<span class="op">-</span>deaths_incidence<span class="op">-</span>recovered_incidence) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">country_region=</span><span class="kw">if_else</span>(country_region<span class="op">==</span><span class="st">"US"</span>,<span class="st">"United States"</span>,</a>
+<a class="sourceLine" id="cb6-10" title="10">                                country_region)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">name=</span>country_region) <span class="op">%&gt;%</span><span class="st"> </span><span class="co">#glimpse() </span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>counts) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="st">  </span><span class="kw">pivot_longer</span>(</a>
+<a class="sourceLine" id="cb6-14" title="14">    <span class="co"># cols = confirmed_cumulative:recovered_incidence,</span></a>
+<a class="sourceLine" id="cb6-15" title="15">    <span class="dt">cols =</span> confirmed_cumulative<span class="op">:</span>active_incidence,</a>
+<a class="sourceLine" id="cb6-16" title="16">    <span class="dt">names_to =</span> <span class="st">"indicator"</span>,<span class="dt">values_to =</span> <span class="st">"value"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="st">  </span><span class="co">#join</span></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="st">  </span><span class="kw">left_join</span>(country_metadata) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="st">  </span><span class="kw">select</span>(iso_a3,name<span class="op">:</span>value,pop_est,lastcensus) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-20" title="20"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rate=</span>value<span class="op">/</span>pop_est<span class="op">*</span><span class="fl">1e6</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co">#count(indicator)</span></a>
+<a class="sourceLine" id="cb6-21" title="21"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">name=</span><span class="kw">fct_reorder</span>(<span class="dt">.f =</span> name,<span class="dt">.x =</span> rate,<span class="dt">.fun =</span> max)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-22" title="22"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">indicator=</span><span class="kw">fct_relevel</span>(indicator,</a>
+<a class="sourceLine" id="cb6-23" title="23">                               <span class="st">"confirmed_cumulative"</span>,</a>
+<a class="sourceLine" id="cb6-24" title="24">                               <span class="st">"confirmed_incidence"</span>,</a>
+<a class="sourceLine" id="cb6-25" title="25">                               <span class="st">"deaths_cumulative"</span>,</a>
+<a class="sourceLine" id="cb6-26" title="26">                               <span class="st">"deaths_incidence"</span>,</a>
+<a class="sourceLine" id="cb6-27" title="27">                               <span class="st">"recovered_cumulative"</span>,</a>
+<a class="sourceLine" id="cb6-28" title="28">                               <span class="st">"recovered_incidence"</span>,</a>
+<a class="sourceLine" id="cb6-29" title="29">                               <span class="st">"active_cumulative"</span>,</a>
+<a class="sourceLine" id="cb6-30" title="30">                               <span class="st">"active_incidence"</span></a>
+<a class="sourceLine" id="cb6-31" title="31">                               )) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-32" title="32"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(date<span class="op">&gt;</span>lubridate<span class="op">::</span><span class="kw"><a href="http://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span>(<span class="dv">20200315</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-33" title="33"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">look=</span><span class="kw">if_else</span>(iso_a3<span class="op">==</span><span class="st">"PER"</span>,<span class="st">"PER"</span>,<span class="st">"NOT"</span>))</a>
+<a class="sourceLine" id="cb6-34" title="34">  <span class="co"># group_by(name,indicator) %&gt;% </span></a>
+<a class="sourceLine" id="cb6-35" title="35">  <span class="co"># mutate(label=max(rate)) %&gt;% </span></a>
+<a class="sourceLine" id="cb6-36" title="36">  <span class="co"># ungroup()</span></a>
+<a class="sourceLine" id="cb6-37" title="37"></a>
+<a class="sourceLine" id="cb6-38" title="38">all_time <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-39" title="39"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> date,<span class="dt">y =</span> rate,<span class="dt">colour =</span> name)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-40" title="40"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> all_time <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(look<span class="op">!=</span><span class="st">"PER"</span>),</a>
+<a class="sourceLine" id="cb6-41" title="41">            <span class="dt">lwd=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-42" title="42"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="kw">vars</span>(indicator),<span class="dt">scales =</span> <span class="st">"free"</span>,<span class="dt">ncol =</span> <span class="dv">2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-43" title="43"><span class="st">  </span><span class="co"># scale_colour_viridis_d(option = "A")</span></a>
+<a class="sourceLine" id="cb6-44" title="44"><span class="st">  </span>colorspace<span class="op">::</span><span class="kw"><a href="http://colorspace.R-Forge.R-project.org//reference/scale_colour_discrete_qualitative.html">scale_color_discrete_qualitative</a></span>(<span class="dt">palette =</span> <span class="st">"Set 2"</span>,</a>
+<a class="sourceLine" id="cb6-45" title="45">                                               <span class="dt">guide =</span> <span class="st">'none'</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-46" title="46"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> all_time <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(look<span class="op">==</span><span class="st">"PER"</span>),</a>
+<a class="sourceLine" id="cb6-47" title="47">            <span class="dt">color=</span><span class="st">"red"</span>,<span class="dt">lwd=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-48" title="48"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">xlim</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(lubridate<span class="op">::</span><span class="kw"><a href="http://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span>(<span class="dv">20200315</span>),<span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>()<span class="op">+</span><span class="dv">5</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-49" title="49"><span class="st">  </span>ggrepel<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span>(<span class="dt">data =</span> all_time <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-50" title="50"><span class="st">                           </span><span class="kw">group_by</span>(name,indicator) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-51" title="51"><span class="st">                           </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(date<span class="op">==</span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-52" title="52"><span class="st">                           </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-53" title="53"><span class="st">                             </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(look<span class="op">!=</span><span class="st">"PER"</span>),</a>
+<a class="sourceLine" id="cb6-54" title="54">                         <span class="kw">aes</span>(<span class="dt">label =</span> iso_a3),</a>
+<a class="sourceLine" id="cb6-55" title="55">                         <span class="dt">xlim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>()<span class="op">+</span><span class="dv">1</span>, <span class="ot">NA</span>),</a>
+<a class="sourceLine" id="cb6-56" title="56">                         <span class="dt">hjust =</span> <span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-57" title="57"><span class="st">  </span>ggrepel<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span>(<span class="dt">data =</span> all_time <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-58" title="58"><span class="st">                             </span><span class="kw">group_by</span>(name,indicator) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-59" title="59"><span class="st">                             </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(date<span class="op">==</span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-60" title="60"><span class="st">                             </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-61" title="61"><span class="st">                             </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(look<span class="op">==</span><span class="st">"PER"</span>),</a>
+<a class="sourceLine" id="cb6-62" title="62">                           <span class="dt">color=</span><span class="st">"red"</span>,</a>
+<a class="sourceLine" id="cb6-63" title="63">                           <span class="kw">aes</span>(<span class="dt">label =</span> iso_a3),</a>
+<a class="sourceLine" id="cb6-64" title="64">                           <span class="dt">xlim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>()<span class="op">+</span><span class="dv">1</span>, <span class="ot">NA</span>),</a>
+<a class="sourceLine" id="cb6-65" title="65">                           <span class="dt">hjust =</span> <span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-66" title="66"><span class="st">  </span><span class="co"># scale_y_log10(</span></a>
+<a class="sourceLine" id="cb6-67" title="67"><span class="st">  </span><span class="co">#   breaks = 10^(-10:10), </span></a>
+<a class="sourceLine" id="cb6-68" title="68"><span class="st">  </span><span class="co">#   minor_breaks = rep(1:9, 21)*(10^rep(-10:10, each=9))</span></a>
+<a class="sourceLine" id="cb6-69" title="69"><span class="st">  </span><span class="co"># ) +</span></a>
+<a class="sourceLine" id="cb6-70" title="70"><span class="st">  </span><span class="co"># # scale_y_log10(</span></a>
+<a class="sourceLine" id="cb6-71" title="71"><span class="st">  </span><span class="co"># #   # breaks = scales::pretty_breaks(n = 10)</span></a>
+<a class="sourceLine" id="cb6-72" title="72"><span class="st">  </span><span class="co"># #   #     breaks = scales::trans_breaks("log10", function(x) 10^x),</span></a>
+<a class="sourceLine" id="cb6-73" title="73"><span class="st">  </span><span class="co"># #   #     labels = scales::trans_format("log10", scales::math_format(10^.x))</span></a>
+<a class="sourceLine" id="cb6-74" title="74"><span class="st">  </span><span class="co"># #   ) +</span></a>
+<a class="sourceLine" id="cb6-75" title="75"><span class="st">  </span><span class="co"># # coord_trans(y="log10") +</span></a>
+<a class="sourceLine" id="cb6-76" title="76"><span class="st">  </span><span class="co"># annotation_logticks(sides = "lb") +</span></a>
+<a class="sourceLine" id="cb6-77" title="77"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"World comparison"</span>,</a>
+<a class="sourceLine" id="cb6-78" title="78">       <span class="dt">x =</span> <span class="st">"Date"</span>,<span class="dt">y=</span><span class="st">"Rate of Events (Per Million Hab.)"</span>)</a></code></pre></div>
+<p><img src="how-to-use_files/figure-html/unnamed-chunk-6-1.png"><!-- --></p>
+</div>
 </div>
   </div>
 
@@ -416,8 +535,8 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#collect-data">Collect data</a></li>
-      <li><a href="#plot-trends">Plot trends</a></li>
+<li><a href="#example-1-analyse-intervention-and-mobility-data">Example 1: Analyse intervention and mobility data</a></li>
+      <li><a href="#example-2-compare-event-rates-among-countries">Example 2: Compare event rates among countries</a></li>
       </ul>
 </div>
       </div>

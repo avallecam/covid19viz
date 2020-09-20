@@ -118,25 +118,25 @@ install.packages("covid19viz")
 <a class="sourceLine" id="cb2-8" title="8"><span class="co">#&gt; # A tibble: 3 x 4</span></a>
 <a class="sourceLine" id="cb2-9" title="9"><span class="co">#&gt;   country_region source    data_filter        sum_data</span></a>
 <a class="sourceLine" id="cb2-10" title="10"><span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;     &lt;list&gt;                &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb2-11" title="11"><span class="co">#&gt; 1 Peru           confirmed &lt;tibble [241 x 7]&gt;   750098</span></a>
-<a class="sourceLine" id="cb2-12" title="12"><span class="co">#&gt; 2 Peru           deaths    &lt;tibble [241 x 7]&gt;    31146</span></a>
-<a class="sourceLine" id="cb2-13" title="13"><span class="co">#&gt; 3 Peru           recovered &lt;tibble [241 x 7]&gt;   594513</span></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="co">#&gt; 1 Peru           confirmed &lt;tibble [242 x 7]&gt;   756412</span></a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="co">#&gt; 2 Peru           deaths    &lt;tibble [242 x 7]&gt;    31283</span></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="co">#&gt; 3 Peru           recovered &lt;tibble [242 x 7]&gt;   594513</span></a>
 <a class="sourceLine" id="cb2-14" title="14"></a>
 <a class="sourceLine" id="cb2-15" title="15"><span class="co">#transform to tidy format</span></a>
 <a class="sourceLine" id="cb2-16" title="16">jhu_sitrep_peru <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb2-17" title="17"><span class="st">  </span><span class="kw"><a href="reference/jhu_sitrep_import.html">jhu_sitrep_all_sources_tidy</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb2-18" title="18"><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(confirmed_cumulative)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb2-19" title="19"><span class="st">  </span><span class="kw">glimpse</span>()</a>
-<a class="sourceLine" id="cb2-20" title="20"><span class="co">#&gt; Rows: 241</span></a>
+<a class="sourceLine" id="cb2-20" title="20"><span class="co">#&gt; Rows: 242</span></a>
 <a class="sourceLine" id="cb2-21" title="21"><span class="co">#&gt; Columns: 8</span></a>
 <a class="sourceLine" id="cb2-22" title="22"><span class="co">#&gt; $ country_region       &lt;chr&gt; "Peru", "Peru", "Peru", "Peru", "Peru", "...</span></a>
-<a class="sourceLine" id="cb2-23" title="23"><span class="co">#&gt; $ date                 &lt;date&gt; 2020-09-18, 2020-09-17, 2020-09-16, 2020...</span></a>
-<a class="sourceLine" id="cb2-24" title="24"><span class="co">#&gt; $ confirmed_cumulative &lt;dbl&gt; 750098, 744400, 738020, 733860, 729619, 7...</span></a>
-<a class="sourceLine" id="cb2-25" title="25"><span class="co">#&gt; $ deaths_cumulative    &lt;dbl&gt; 31146, 31051, 30927, 30812, 30710, 30526,...</span></a>
-<a class="sourceLine" id="cb2-26" title="26"><span class="co">#&gt; $ recovered_cumulative &lt;dbl&gt; 594513, 594513, 580753, 573364, 566796, 5...</span></a>
-<a class="sourceLine" id="cb2-27" title="27"><span class="co">#&gt; $ confirmed_incidence  &lt;dbl&gt; 5698, 6380, 4160, 4241, 6787, 6162, 6603,...</span></a>
-<a class="sourceLine" id="cb2-28" title="28"><span class="co">#&gt; $ deaths_incidence     &lt;dbl&gt; 95, 124, 115, 102, 184, 56, 126, 108, 113...</span></a>
-<a class="sourceLine" id="cb2-29" title="29"><span class="co">#&gt; $ recovered_incidence  &lt;dbl&gt; 0, 13760, 7389, 6568, 7475, 0, 14576, 778...</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-23" title="23"><span class="co">#&gt; $ date                 &lt;date&gt; 2020-09-19, 2020-09-18, 2020-09-17, 2020...</span></a>
+<a class="sourceLine" id="cb2-24" title="24"><span class="co">#&gt; $ confirmed_cumulative &lt;dbl&gt; 756412, 750098, 744400, 738020, 733860, 7...</span></a>
+<a class="sourceLine" id="cb2-25" title="25"><span class="co">#&gt; $ deaths_cumulative    &lt;dbl&gt; 31283, 31146, 31051, 30927, 30812, 30710,...</span></a>
+<a class="sourceLine" id="cb2-26" title="26"><span class="co">#&gt; $ recovered_cumulative &lt;dbl&gt; 594513, 594513, 594513, 580753, 573364, 5...</span></a>
+<a class="sourceLine" id="cb2-27" title="27"><span class="co">#&gt; $ confirmed_incidence  &lt;dbl&gt; 6314, 5698, 6380, 4160, 4241, 6787, 6162,...</span></a>
+<a class="sourceLine" id="cb2-28" title="28"><span class="co">#&gt; $ deaths_incidence     &lt;dbl&gt; 137, 95, 124, 115, 102, 184, 56, 126, 108...</span></a>
+<a class="sourceLine" id="cb2-29" title="29"><span class="co">#&gt; $ recovered_incidence  &lt;dbl&gt; 0, 0, 13760, 7389, 6568, 7475, 0, 14576, ...</span></a></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="reference/jhu_sitrep_import.html">jhu_sitrep_country_report</a></span>(<span class="dt">country_region =</span> <span class="st">"Peru"</span>)</a></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -244,6 +244,7 @@ install.packages("covid19viz")
 <a class="sourceLine" id="cb4-94" title="94"><span class="co">#&gt; $ Country &lt;chr&gt; "China", "Mongolia", "China", "Mongolia", "...</span></a>
 <a class="sourceLine" id="cb4-95" title="95"><span class="co">#&gt; $ Status  &lt;chr&gt; "Partially open", "Closed due to COVID-19",...</span></a>
 <a class="sourceLine" id="cb4-96" title="96"><span class="co">#&gt; $ Note    &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,...</span></a></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
 </div>
 <div id="import-initial-stages-of-the-who-sitreps" class="section level3">
 <h3 class="hasAnchor">
@@ -262,7 +263,7 @@ install.packages("covid19viz")
 <a class="sourceLine" id="cb5-8" title="8"><span class="kw"><a href="reference/who_sitrep_import.html">who_sitrep_country_report</a></span>(</a>
 <a class="sourceLine" id="cb5-9" title="9">  <span class="dt">update =</span> update,</a>
 <a class="sourceLine" id="cb5-10" title="10">  <span class="dt">country_region =</span> <span class="st">"Brazil"</span>)</a></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
 </div>
 </div>
 </div>
